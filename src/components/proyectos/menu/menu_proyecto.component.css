@@ -1,0 +1,35 @@
+.navbar {
+  padding: 0;
+}
+.nav-item a {
+  color: black;
+}
+.nav-tabs {
+  border-bottom: 1px solid #ebeff5  ;
+}
+.nav-tabs .nav-link.active{
+  background-color: #f7f7f7;
+  border-color: #ebeff5 #ebeff5 #ebeff5;
+  color: black;
+}
+.nav-link:hover {
+  background: #ebeff5;
+}
+.display-always {
+  display: block;
+}
+.nav-item a {
+  color: #b0a6a6;
+  font-size: .8em;
+}
+.card-header-menu {
+  background-color: black;
+  color: white;
+} 
+.card-menu {
+  border: 1px solid black;
+  border-radius: 0rem;
+}
+.card-header-menu:first-child {
+  border-radius: 0;
+}

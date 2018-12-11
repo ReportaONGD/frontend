@@ -1,0 +1,83 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Listado de Partidas
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" ngbPopover="Partidas correspondientes segun el tipo de coste y el tipo de partida."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <!-- <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" type="button" ngbTooltip="Añadir" style="float: right"
+          (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button> -->
+      </div>
+
+    </h5>
+  </div>
+  <div class="card-body" *ngIf="showForm | async">
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Coste</label>
+          </div>
+          <div class="p-0 col-md-3 text-center form-group no-margin">
+            <label class="label-cabecera">Partida Padre</label>
+          </div>
+          <!-- <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Es Padre</label>
+          </div> -->
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Código</label>
+          </div>
+          <!-- <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            <label class="label-cabecera">Etapa</label>
+          </div> -->
+          <div class="p-0 col-md-4 text-center form-group no-margin">
+            <label class="label-cabecera">Nombre</label>
+          </div>
+
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let partida of partidas let i = index">
+        <div class="row">
+          <div class="p-0 col-md-1 text-center btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary" ngbTooltip="Editar" placement="top" (click)="edit(partida)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <!-- <button type="button" class="btn btn-danger" *ngIf="!isEjecucion" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(partida)">
+              <i class="fa fa-trash-o"></i>
+            </button> -->
+          </div>
+          <div class="p-0 col-md-2 form-group no-margin text-center">
+            {{partida.costes.valor}}
+          </div>
+          <div class="p-0 col-md-3 form-group no-margin text-center" *ngIf="partida.partida_padre" ngbPopover=" {{partida.partida_padre.codigo}} - {{partida.partida_padre.nombre}}"
+            triggers="mouseenter:mouseleave" popoverTitle="Partida Padre">
+            {{partida.partida_padre.codigo}} - {{(partida.partida_padre.nombre | slice:0:30)}}
+          </div>
+          <!-- <div class="p-0 col-md-1 form-group no-margin text-center" *ngIf="!partida.es_padre">
+            <i class="fa fa-times"></i>
+          </div> -->
+          <div class="p-0 col-md-1 form-group no-margin text-center">
+            {{partida.codigo}}
+          </div>
+          <!-- <div class="p-0 col-md-2 col-xs-2 form-group no-margin" ngbPopover="Desde: {{partida.etapa.fecha_inicio}}, Hasta: {{partida.etapa.fecha_fin}}"
+            triggers="mouseenter:mouseleave" popoverTitle="Etapa">
+            {{partida.etapa.nombre}}
+          </div> -->
+          <div class="p-0 col-md-4 form-group text-center no-margin" ngbPopover="{{partida.nombre}}" triggers="mouseenter:mouseleave" popoverTitle="Nombre">
+            {{(partida.nombre.length >45) ? (partida.nombre | slice:0:45) + '...' : (partida.nombre)}}
+          </div>
+
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body" *ngIf="!(showForm | async) && !isEjecucion">
+    <ngb-alert type='warning'>No existe ninguna Partida.</ngb-alert>
+  </div>
+</div>

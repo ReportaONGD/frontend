@@ -1,0 +1,126 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Cuentas Bancarias
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Agregue las cuentas bancarias asociados al proyecto."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" *ngIf="!isEjecucion" (click)="addNewCuenta()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="col-xs-12" *ngIf="showForm">
+      <form (submit)="onSubmit()" [formGroup]="frmCuenta">
+        <div class="row">
+          <div class="col-md-5 col-xs-5 form-group">
+            <div class="form-label-group">
+                <input type="text" id="txtEntidad" class="form-control" formControlName="entidad" placeholder="Entidad" appAutofocus>
+                <label for="txtEntidad">Entidad</label>
+                <div *ngIf="frmCuenta.get('entidad').invalid && (frmCuenta.get('entidad').dirty || frmCuenta.get('entidad').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmCuenta.get('entidad').hasError('required')">El campo entidad es obligatorio.</span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-7 col-xs-7 form-group">
+              <div class="form-label-group">
+                  <input type="text" class="form-control" id="txtNCuenta" formControlName="ncuenta" maxlength="28" placeholder="Nº Cuenta">
+                  <label for="txtNCuenta">Nº Cuenta</label>
+                  <div *ngIf="frmCuenta.get('ncuenta').invalid && (frmCuenta.get('ncuenta').dirty || frmCuenta.get('ncuenta').touched)" class="alert alert-danger alert-form">
+                    <span *ngIf="frmCuenta.get('ncuenta').hasError('required')">El campo nº cuenta es obligatorio.</span>
+                    <span *ngIf="frmCuenta.get('ncuenta').hasError('maxlength')">Ha excedido el número máximo de caracteres.</span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-4 col-xs-4 form-group">
+            <app-paises-component [item]="frmCuenta" [isMultiple]="false"></app-paises-component>
+          </div>
+          <div class="col-md-4 col-xs-4 form-group">
+            <app-moneda-component [item]="frmCuenta" [isRequired]="true"></app-moneda-component>
+          </div>
+          <div class="col-md-4 col-xs-4 form-group">
+            <app-localizaciones-combo-component [item]="frmCuenta" [isRequired]="true"></app-localizaciones-combo-component>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary" *ngIf="!isEjecucion" [disabled]="!frmCuenta.valid" type="submit">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="cancel()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+    <ul class="list-group" style="padding-top: 1.25rem;" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-1 col-xs-2 text-center" *ngIf="!isEjecucion">
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Entidad</label>
+          </div>
+          <div class="p-0 col-md-4 text-center form-group no-margin">
+            <label class="label-cabecera">Nº Cuenta
+            </label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Moneda</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">País</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Localización</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let cb of proyecto.cuentas_bancarias let i = index"
+      [class.fila-activa]="cb === cuenta">
+        <div class="row">
+          <div class="p-0 col-md-1 col-xs-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <!-- <button type="button" class="btn btn-success"  [disabled]="showForm" ngbTooltip="Operaciones Bancarias" placement="top" (click)="showMovimientos(cb)">
+              <i class="fa fa-eur"></i>
+            </button> -->
+            <button type="button" class="btn btn-primary"  [disabled]="showForm" ngbTooltip="Editar" placement="top" (click)="editCuenta(cb)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger"  ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(cb)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{cb.entidad}}</label>
+          </div>
+          <div class="p-0 col-md-4 text-center form-group no-margin">
+            <label>{{cb.ncuenta}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{cb.moneda.codigo}}</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{cb.pais.valor}}</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{cb.localizacion.valor}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- <div class="row card-block">
+      <div class="col-md-12" style="padding: 1rem" *ngIf="showOperaciones | async" >
+        <app-operacion-bancaria-component [cuenta]="cuenta" [ids]="ids"></app-operacion-bancaria-component>
+      </div>
+    </div> -->
+  </div>
+  <div class="row"  *ngIf="!isEjecucion">
+    <div class="col-md-12" style="padding-left: 35px;padding-right: 35px;" *ngIf="showAlert() && !isEjecucion">
+      <ngb-alert type='info'>No existe ninguna Cuenta Bancaria, pulse en el botón + para agregar una nueva.</ngb-alert>
+    </div>
+  </div>
+</div>

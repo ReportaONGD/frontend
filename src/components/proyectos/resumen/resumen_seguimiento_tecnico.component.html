@@ -1,0 +1,220 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Resumen Seguimiento Técnico
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+    </h5>
+  </div>
+  <div class="card-body" *ngIf="!(showAlert | async)">
+    <div class="row" *ngFor="let oe of proyecto.objetivos_especificos" style="margin:0">
+      <h5 class="text-primary" style="margin-left: 1rem;">Indicadores de {{oe.codigo}}</h5>
+      <div class="col-md-12 col-xs-12 card card-body" style="margin: 1rem;" *ngFor="let indicador of oe.indicadores">
+        <h5 class="card-title">Indicador: {{indicador.codigo}}</h5>
+        <p class="card-text">{{indicador.descripcion}}</p>
+        <p>
+          <strong>Base:</strong> {{indicador.linea_base}},
+          <strong>Meta:</strong> {{indicador.meta}}</p>
+        <ngb-alert [type]="getType(indicador, true)" [dismissible]="false">Cumplimiento del Indicador: {{getMessage(indicador, true)}}</ngb-alert>
+        <ul class="list-group" style="margin-bottom: 1rem" *ngIf="indicador.medida && indicador.medida.length > 0">
+          <li class="list-group-item bg-secondary">
+            <label class="label-cabecera">Listado de Mediciones</label>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                <label class="label-cabecera">Fecha</label>
+              </div>
+              <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                <label class="label-cabecera">Comentario</label>
+              </div>
+              <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                <label class="label-cabecera">Valor</label>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngFor="let medida of indicador.medida">
+            <div class="row">
+              <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                <label>{{ds.format(medida.fecha)}}</label>
+              </div>
+              <div class="col-md-4 col-xs-12 form-group no margin">
+                <label>{{medida.comentario}}</label>
+              </div>
+              <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                <label>{{medida.valor}}</label>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="row" style="margin: 0" *ngIf="indicador.fuente_verificacion && indicador.fuente_verificacion.length > 0">
+          <h6 class="text-primary">Fuentes de Verificación</h6>
+          <div class="col-md-12 col-xs-12" style="padding: 0" *ngFor="let fuente of indicador.fuente_verificacion">
+            <p>
+              <strong>{{fuente.codigo}}: </strong> {{fuente.descripcion}}</p>
+            <ul class="list-group" style="margin-bottom: 1rem" *ngIf="fuente.documentos && fuente.documentos.length > 0">
+              <li class="list-group-item bg-secondary">
+                <label class="label-cabecera">Listado de Documentos</label>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-md-12 col-xs-12 text-center form-group no margin">
+                    <label class="label-cabecera">Fichero</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item" *ngFor="let documento of fuente.documentos">
+                <div class="row">
+                  <div class="col-md-12 col-xs-12 text-center form-group no margin">
+                    <label>{{documento.nombre}}</label>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ngb-alert *ngIf="!fuente.documentos || fuente.documentos.length === 0" type="warning" [dismissible]="false">No existen documentos asociadas a la fuentes de verificación</ngb-alert>
+          </div>
+        </div>
+        <ngb-alert *ngIf="!indicador.fuente_verificacion || indicador.fuente_verificacion.length === 0" type="warning" [dismissible]="false">No existen fuentes de verificación asociadas al indicador</ngb-alert>
+      </div>
+
+      <div class="row card card-body" style="border: 0" *ngIf="oe.resultados && oe.resultados.length > 0">
+        <h5 class="text-primary" style="margin: 0 .5rem">Resultados de {{oe.codigo}}</h5>
+        <div class="card card-body" style="margin: .5rem;" *ngFor="let resultado of oe.resultados">
+          <h5 class="card-title">Resultado: {{resultado.codigo}}</h5>
+          <p class="card-text">{{resultado.descripcion}}</p>
+          <!-- INDICADORES -->
+          <div class="card card-body" style="margin: 1rem;" *ngFor="let indicador of resultado.indicadores">
+            <h5 class="card-title">Indicador: {{indicador.codigo}}</h5>
+            <p class="card-text">{{indicador.descripcion}}</p>
+            <p>
+              <strong>Base:</strong> {{indicador.linea_base}},
+              <strong>Meta:</strong> {{indicador.meta}}</p>
+            <ngb-alert [type]="getType(indicador,false)" [dismissible]="false">Cumplimiento del Indicador: {{getMessage(indicador, false)}}</ngb-alert>
+            <ul class="list-group" style="margin-bottom: 1rem" *ngIf="indicador.medida && indicador.medida.length > 0">
+              <li class="list-group-item bg-secondary">
+                <label class="label-cabecera">Listado de Mediciones</label>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                    <label class="label-cabecera">Fecha</label>
+                  </div>
+                  <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                    <label class="label-cabecera">Comentario</label>
+                  </div>
+                  <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                    <label class="label-cabecera">Valor</label>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item" *ngFor="let medida of indicador.medida">
+                <div class="row">
+                  <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                    <label>{{medida.fecha}}</label>
+                  </div>
+                  <div class="col-md-4 col-xs-12 form-group no margin">
+                    <label>{{medida.comentario}}</label>
+                  </div>
+                  <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                    <label>{{medida.valor}}</label>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="row" style="margin: 0" *ngIf="indicador.fuente_verificacion && indicador.fuente_verificacion.length > 0">
+              <h6 class="text-primary">Fuentes de Verificación</h6>
+              <div class="col-md-12 col-xs-12" style="padding: 0" *ngFor="let fuente of indicador.fuente_verificacion">
+                <p>
+                  <strong>{{fuente.codigo}}: </strong> {{fuente.descripcion}}</p>
+                <ul class="list-group" style="margin-bottom: 1rem" *ngIf="fuente.documentos && fuente.documentos.length > 0">
+                  <li class="list-group-item bg-secondary">
+                    <label class="label-cabecera">Listado de Documentos</label>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-12 col-xs-12 text-center form-group no margin">
+                        <label class="label-cabecera">Fichero</label>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item" *ngFor="let documento of fuente.documentos">
+                    <div class="row">
+                      <div class="col-md-12 col-xs-12 text-center form-group no margin">
+                        <label>{{documento.nombre}}</label>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ngb-alert *ngIf="!fuente.documentos || fuente.documentos.length === 0" type="warning" [dismissible]="false">No existen documentos asociadas a la fuentes de verificación</ngb-alert>
+              </div>
+            </div>
+            <ngb-alert *ngIf="!indicador.fuente_verificacion || indicador.fuente_verificacion.length === 0" type="warning" [dismissible]="false">No existen fuentes de verificación asociadas al indicador</ngb-alert>
+            <div class="col-md-12 col-xs-12" style="padding: 0" *ngIf="indicador.comentarios && indicador.comentarios.length > 0">
+              <ul class="list-group" style="margin-bottom: 1rem">
+                <li class="list-group-item bg-secondary">
+                  <label class="label-cabecera">Listado de Comentarios</label>
+                </li>
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                      <label class="label-cabecera">Fecha</label>
+                    </div>
+                    <div class="col-md-8 col-xs-12 text-center form-group no margin">
+                      <label class="label-cabecera">Comentario</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item" *ngFor="let comentario of indicador.comentarios">
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                      <label>{{comentario.fecha}}</label>
+                    </div>
+                    <div class="col-md-8 col-xs-12 form-group no margin">
+                      <label>{{comentario.texto}}</label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ngb-alert *ngIf="!indicador.comentarios || indicador.comentarios.length === 0" type="warning" [dismissible]="false">No existen comentarios asociadas al indicador</ngb-alert>
+          </div>
+          <!-- ACTIVIDADES -->
+          <div class="card card-body" style="margin: 1rem;" *ngFor="let actividad of resultado.actividades">
+            <h5 class="card-title">Actividad: {{actividad.codigo}}</h5>
+            <p class="card-text">{{actividad.descripcion}}</p>
+            <div class="col-md-12 col-xs-12" style="padding: 0" *ngIf="actividad.comentarios && actividad.comentarios.length > 0">
+              <ul class="list-group" style="margin-bottom: 1rem">
+                <li class="list-group-item bg-secondary">
+                  <label class="label-cabecera">Listado de Comentarios</label>
+                </li>
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                      <label class="label-cabecera">Fecha</label>
+                    </div>
+                    <div class="col-md-8 col-xs-12 text-center form-group no margin">
+                      <label class="label-cabecera">Comentario</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item" *ngFor="let comentario of actividad.comentarios">
+                  <div class="row">
+                    <div class="col-md-4 col-xs-12 text-center form-group no margin">
+                      <label>{{comentario.fecha}}</label>
+                    </div>
+                    <div class="col-md-8 col-xs-12 form-group no margin">
+                      <label>{{comentario.texto}}</label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ngb-alert *ngIf="!actividad.comentarios || actividad.comentarios.length === 0" type="warning" [dismissible]="false">No existen comentarios asociadas a la actividad</ngb-alert>
+          </div>
+          <ngb-alert *ngIf="!resultado.actividades || resultado.actividades.length === 0" type="warning" [dismissible]="false">No existen actividades asociadas al resultado {{resultado.codigo}}</ngb-alert>
+        </div>
+      </div>
+      <ngb-alert *ngIf="!oe.resultados || oe.resultados.length === 0" type="warning" [dismissible]="false">No existen resultados asociadas al objetivo especifico {{oe.codigo}}</ngb-alert>
+    </div>
+
+  </div>
+</div>

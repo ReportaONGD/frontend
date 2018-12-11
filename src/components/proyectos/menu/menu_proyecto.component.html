@@ -1,0 +1,78 @@
+<!-- <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+
+  <a class="navbar-text" href="#">&nbsp;</a>
+
+  <button class="navbar-toggler" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"
+          type="button" (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [ngbCollapse]="!isCollapsed">
+    <ul class="navbar-nav">
+      <li class="nav-item" *ngFor="let m of menu">
+        <a class="nav-link" (click)="goTo(m.route)" [routerLink]="m.route" [routerLinkActive]="['active']">{{m.titleLink}}</a>
+      </li>
+    
+    </ul>
+  </div> 
+</nav> -->
+<!--
+<ul class="navbar navbar-expand-md bg-dark navbar-dark">
+  <li class="nav-item" *ngFor="let m of menu">
+    <a class="nav-link" (click)="goTo(m.route)" [routerLink]="m.route" [routerLinkActive]="['active']">{{m.titleLink}}</a>
+  </li>
+
+</ul> -->
+
+<!-- 
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+  <button class="navbar-toggler display-always" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" type="button"
+    (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="brand">Menú Proyecto</div>
+  <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"></i>
+  <div [ngbCollapse]="!isCollapsed" >
+    <ul class="navbar navbar-expand-md bg-dark navbar-dark">
+      <li class="nav-item" *ngFor="let m of menu">
+        <a (click)="goTo(m.route)" [routerLink]="m.route" [routerLinkActive]="['active']">{{m.titleLink}}</a>
+      </li>
+    </ul>
+  </div>
+</nav> -->
+
+<nav class="navbar navbar-light navbar-expand-md menu-header" *ngIf="_id">
+  <button class="navbar-toggler" type="button" [attr.aria-expanded]="isCollapsed" aria-controls="collapseExample" type="button"
+    (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- [ngbCollapse]="isCollapsed" -->
+  <div  style="width: 95%;margin: 0 auto;">
+    <!-- <div class="nav flex-sm-column flex-row" *ngFor="let m of menu">
+        <a (click)="goTo(m.route)" [routerLink]="m.route" [routerLinkActive]="['active']">{{m.titleLink}}</a>
+    </div> -->
+    <div  id="accordionMenu" role="tablist" aria-multiselectable="true" >
+      <div class="card card-menu"  *ngFor="let m of menu">
+        <div class="card-header card-header-menu" id="headingOne">
+          <h5 class="mb-0">
+            <a data-parent="#accordionMenu" style="cursor: pointer;" (click)="m.collapse = !m.collapse" 
+            [attr.aria-expanded]="!m.collapse" data-target="#{{m.target}}"
+            ngbTooltip="Pulse para desplegar" placement="right">
+              {{m.titleLink}}
+            </a>
+          </h5>
+        </div>
+        <div id="{{m.target}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMenu" [ngbCollapse]="m.collapse">
+          <div class="card-body">
+            <ul class="nav flex-column">
+              <li class="nav-item" *ngFor="let child of m.childrens">
+                <a *ngIf="child.display" (click)="goTo(child.route)" [routerLink]="child.route" [routerLinkActive]="['active']">{{child.titleLink}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>

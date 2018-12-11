@@ -1,0 +1,68 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmPeriodo" (submit)="onSubmitPeriodo()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" appAutofocus>
+            <div *ngIf="frmPeriodo.get('nombre').invalid
+                && (frmPeriodo.get('nombre').dirty || frmPeriodo.get('nombre').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmPeriodo.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <select [compareWith]="compareFn" class="form-control" formControlName="tipo_periodo">
+              <option [ngValue]="null" [selected]="true" disabled>Tipo Periodo</option>
+              <option *ngFor="let tipo_periodo of tipos_periodo" [ngValue]="tipo_periodo">{{tipo_periodo.nombre}}</option>
+            </select>
+            <div *ngIf="frmPeriodo.get('tipo_periodo').invalid
+                && (frmPeriodo.get('tipo_periodo').dirty || frmPeriodo.get('tipo_periodo').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmPeriodo.get('tipo_periodo').hasError('required')">El campo Tipo Periodo es obligatorio.</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha Inicio" type="text" formControlName="_fecha_inicio" ngbDatepicker #fechaInicio="ngbDatepicker"
+                [outsideDays]="hidden" [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaInicio.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmPeriodo.hasError('datediff') || (frmPeriodo.get('_fecha_inicio').invalid 
+                && (frmPeriodo.get('_fecha_inicio').dirty 
+                || frmPeriodo.get('_fecha_inicio').touched))" class="alert alert-danger alert-form">
+              <span *ngIf="frmPeriodo.get('_fecha_inicio').hasError('required')">El campo fecha inicio es obligatorio.</span>
+              <span *ngIf="frmPeriodo.hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha Fin" type="text" ngbDatepicker formControlName="_fecha_fin" #fechaFin="ngbDatepicker"
+                [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaFin.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmPeriodo.hasError('datediff') || (frmPeriodo.get('_fecha_fin').invalid 
+                && (frmPeriodo.get('_fecha_fin').dirty 
+                || frmPeriodo.get('_fecha_fin').touched))" class="alert alert-danger alert-form">
+              <span *ngIf="frmPeriodo.get('_fecha_fin').hasError('required')">El campo fecha fin es obligatorio.</span>
+              <span *ngIf="frmPeriodo.hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmPeriodo.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

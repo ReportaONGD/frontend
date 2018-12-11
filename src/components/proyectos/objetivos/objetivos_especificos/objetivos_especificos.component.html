@@ -1,0 +1,120 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Objetivos Específicos
+      <i class="fa fa-spinner fa-spin" *ngIf="isloading"></i>
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" ngbPopover="Agregue un objetivo para poder generar los indicadores e hipotesis asociados."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" type="button" ngbTooltip="Añadir" (click)="addNewObjetivo()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+
+  </div>
+  <div class="card-body" style="margin: 0" *ngIf="(showAlert | async) && !isEjecucion">
+      <app-alert-component  [alert]="alert"></app-alert-component>
+  </div>
+  <div class="card-block form-project-no-bottom" *ngIf="showForm">
+    <form (submit)="onSubmit()" [formGroup]="frmObjetivo">
+      <!--CODIGO DESCRIPCION-->
+      <div class="row">
+        <div class=" col-md-2 col-xs-12 form-group">
+          <div class="form-label-group">
+              <input type="text" id="txtCod" placeholder="Código" formControlName="codigo" class="form-control">
+              <label for="txtCod">Código</label>
+              <div *ngIf="frmObjetivo.controls.codigo.invalid 
+                  && (frmObjetivo.controls.codigo.dirty || frmObjetivo.controls.codigo.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmObjetivo.controls.codigo.hasError('required')">El campo código es obligatorio.</span>
+              </div>
+          </div>
+          
+        </div>
+        <div class=" col-md-7 col-xs-12 form-group">
+          <div class="form-label-group">
+              <input type="text" id="txtDesc" placeholder="Descripción" formControlName="descripcion" class="form-control">
+              <label for="txtDesc">Descripción</label>
+              <div *ngIf="frmObjetivo.controls.descripcion.invalid 
+                  && (frmObjetivo.controls.descripcion.dirty || frmObjetivo.controls.descripcion.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmObjetivo.controls.descripcion.hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+          </div>
+        </div>
+        
+        <div class=" col-md-3 col-xs-12 text-right">
+          <button class="btn btn-primary" [disabled]="!frmObjetivo.valid" type="submit">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="cancelSave()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card-block form-project" *ngIf="!emptyList()">
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            <label class="label-cabecera">Código</label>
+          </div>
+          <div class="p-0 col-md-8 col-xs-8 text-center form-group no-margin">
+            <label class="label-cabecera">Descripción</label>
+          </div>
+          
+          <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            <label class="label-cabecera">Acciones</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-action justify-content-between" [class.fila-activa]="objE === objetivoEspecifico"
+        *ngFor="let objE of objetivosEspecificos let ind = index">
+        <div class="row" (click)="selectObjetivo(objE)">
+          <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            {{objE.codigo}}
+          </div>
+          <div class="p-0 col-md-8 col-xs-8 text-center form-group no-margin">
+            {{objE.descripcion}}
+          </div>
+         
+          <div class="p-0 col-md-2 col-xs-2 btn-group-sm text-center" role="group">
+            <button type="button" class="btn btn-success" ngbTooltip="Seleccionar objetivo" placement="top" (click)="selectObjetivo(objE)">
+              <i class="fa fa-check-square-o"></i>
+            </button>
+            <button type="button" class="btn btn-primary" ngbTooltip="Editar" placement="top" (click)="editObjetivo(objE)" *ngIf="!isEjecucion">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(objE)" *ngIf="!isEjecucion">
+              <i class="fa fa-trash-o"></i>
+            </button>
+            <button type="button" class="btn btn-success" ngbTooltip="Comentarios" placement="top" (click)="addNewComentario(objE)" *ngIf="isEjecucion">
+              <i class="fa fa-comments"></i>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="row card-block" style="margin: 0">
+    <div class="col-md-5 form-project" *ngIf="!emptyList() && (objetivoEspecifico && objetivoEspecifico._id)">
+      <app-hipotesis-component [ids]="ids" [service]="oeHipotesisService"></app-hipotesis-component>
+    </div>
+    <!-- <div class="p-0 col-md-7 form-project" *ngIf="!emptyList() && objetivoEspecifico">
+      <app-fuente-verificacion-component [ids]="ids" [service]="oeFVService">
+      </app-fuente-verificacion-component>
+    </div> -->
+    <div class="col-md-7 form-project" *ngIf="!emptyList() && (objetivoEspecifico && objetivoEspecifico._id)">
+      <app-indicadores-component [isModal]="true" [ids]="ids" [service]="oeIndicadorService" [fuente_verificacion_service]="oeFVService"
+        [documentos_service]="documentos_service" [medidas_service]="medidasService" 
+        [comentarios_service]="indComentarioService">
+      </app-indicadores-component>
+    </div>
+  </div>
+ 
+ 
+</div>
+

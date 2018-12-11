@@ -1,0 +1,14 @@
+<div class="form-label-group" [formGroup]="item">
+  <select *ngIf="isMultiple" multiple formControlName="implementador" id="ddImplementador" [compareWith]="compareFn" class="form-control">
+    <option *ngFor="let implementador of implementadores" [ngValue]="implementador">{{implementador.nombre}}</option>
+  </select>
+  <select *ngIf="!isMultiple" formControlName="implementador" id="ddImplementador" [compareWith]="compareFn" class="form-control">
+    <!-- <option [ngValue]="null" [selected]="true" disabled>Implementador</option> -->
+    <option *ngFor="let implementador of implementadores" [ngValue]="implementador">{{implementador.nombre}}</option>
+  </select>
+  <label for="ddImplementador">{{ etiqueta }}</label>
+  <div *ngIf="(item.get(nombreControl).invalid && (item.get(nombreControl).dirty || item.get(nombreControl).touched))"
+    class="alert alert-danger alert-form">
+    <span>El campo {{ etiqueta }} es obligatorio.</span>
+  </div>
+</div>

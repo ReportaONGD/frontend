@@ -1,0 +1,16 @@
+<app-menu *ngIf="visible$ | async"></app-menu>
+<div class="container-fluid" style='margin-top: 10px;'>
+  <div class="card" >
+    <h3 class="card-header">{{title}}</h3>
+    <div class="card-block custom-card-block">
+      <div class="col-md-12 col-xs-12 text-right" *ngIf="showGoto$ | async" style="margin-bottom: 1rem;">
+        <a class="btn btn-primary btn-sm" style="color: white;" role="button" (click)="goTo()">Ir a Proyecto Activo</a>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <!-- <app-loader-component [HTTPActivity]="!loading"></app-loader-component> -->
+</div>
+<div class="my-container" [hidden]="!loading">
+    <ngx-loading show=true; [config]="config"></ngx-loading>
+</div>

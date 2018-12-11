@@ -1,0 +1,182 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Resumen Matriz
+    </h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group" *ngIf="(resumen_oe | async)">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Objetivo Especifico</label>
+          </div>
+
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Hipotésis
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Indicador
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Fuente de Verificación
+            </label>
+          </div>
+
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_oe | async)">
+        <div class="row">
+          <div class="col text-left form-group no-margin">
+            <label>{{item.objetivo_especifico}}</label>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let fv of item.fuente_verificacion">
+              {{fv}}
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let ind of item.indicador">
+              {{ind}}
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let hip of item.hipotesis">
+              {{hip}}
+            </div>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+    <ngb-alert *ngIf="!(resumen_resultado | async)" type="warning" [dismissible]="false">
+        No existen objetivos especificos asociadas al proyecto.
+    </ngb-alert>
+    <br/>
+    <ul class="list-group " *ngIf="(resumen_resultado | async)">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Resultado</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Hipotésis
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Indicador
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Fuente de Verificación
+            </label>
+          </div>
+
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_resultado | async)">
+        <div class="row">
+          <div class="col text-left form-group no-margin">
+            <label>{{item.resultado}}</label>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let fv of item.fuente_verificacion">
+              {{fv}}
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let ind of item.indicador">
+              {{ind}}
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let hip of item.hipotesis">
+              {{hip}}
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <ngb-alert *ngIf="!(resumen_resultado | async)" type="warning" [dismissible]="false">
+        No existen resultados asociadas al proyecto.
+    </ngb-alert>
+    <br/>
+    <ul class="list-group" *ngIf="(resumen_actividad | async)">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Actividad</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Recurso
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Coste
+            </label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_actividad | async)">
+        <div class="row">
+          <div class="col text-left form-group no-margin">
+            <label>{{item.actividad}}</label>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let r of item.recurso">
+              {{r}}
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12 text-center" *ngFor="let c of item.coste">
+              {{c}}
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <ngb-alert *ngIf="!(resumen_actividad | async)" type="warning" [dismissible]="false">
+        No existen actividades asociadas al proyecto.
+    </ngb-alert>
+    <br />
+    <ul class="list-group" *ngIf="(resumen_actividad_global | async)">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col text-center form-group no-margin ">
+            <label class="label-cabecera">Actividad Global</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Recurso
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Coste
+            </label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_actividad_global | async)">
+        <div class="row">
+          <div class="col text-left form-group no-margin">
+            <label>{{item.actividad}}</label>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let r of item.recurso">
+              <label>{{r}}</label>
+            </div>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <div class="col-md-12 col-xs-12 text-center" *ngFor="let c of item.coste">
+              <label> {{c}}</label>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <ngb-alert *ngIf="!(resumen_actividad_global | async)" type="warning" [dismissible]="false">
+        No existe actividad global asociada al proyecto.
+    </ngb-alert>
+  </div>
+</div>

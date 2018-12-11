@@ -1,0 +1,10 @@
+<div class="form-label-group" [formGroup]="item">
+    <select formControlName="actividad" id="ddlActividad" [required]="isRequired" [compareWith]="compareFn" class="form-control">
+        <option [ngValue]="null" [selected]="true" disabled>Actividad</option>
+        <option *ngFor="let actividad of actividades" [ngValue]="actividad">{{actividad.codigo}}</option>
+    </select>
+    <label for="ddlActividad">Actividad</label>
+    <div *ngIf="isRequired && (item.get('actividad').invalid && (item.get('actividad').dirty || item.get('actividad').touched))" class="alert alert-danger alert-form">
+        <span>El campo actividad es obligatorio.</span>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="form-label-group" [formGroup]="item">
+    <select *ngIf="isMultiple" multiple formControlName="gastos" id="ddlGasto" [compareWith]="compareFn" class="form-control">
+        <option *ngFor="let gasto of gastos" [ngValue]="gasto">{{gasto.concepto}}</option>
+    </select>
+    <select *ngIf="!isMultiple" formControlName="gastos" id="ddlGasto" [compareWith]="compareFn" class="form-control">
+        <option [ngValue]="null" [selected]="true" disabled>Gasto</option>
+        <option *ngFor="let gasto of gastos" [ngValue]="gasto">{{gasto.concepto}}</option>
+    </select>
+    <label for="ddlGasto">Gastos</label>
+    <div *ngIf="isRequired && (item.get('gastos').invalid && (item.get('gastos').dirty || item.get('gastos').touched))" class="alert alert-danger alert-form">
+        <span>El campo gasto es obligatorio.</span>
+    </div>
+</div>

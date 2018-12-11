@@ -1,0 +1,46 @@
+<div class="card card-body">
+        <div class="row" *ngIf="project | async" style="margin-top: 2rem"> 
+                <div class="col-md-3 col-xs-12 form-group">
+                    <div class="form-label-group">
+                        <select  id="etapa" class="form-control" [(ngModel)]="etapa" (change)="changeEstado()">
+                          <option value="null" selected="selected">Seleccionar...</option>
+                          <option *ngFor="let etapa of etapas" [ngValue]="etapa">{{etapa.nombre}}</option>
+                        </select>
+                        <label for="etapa">Seleccionar Etapa</label>
+                      </div>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group" >
+                    <div class="form-label-group">
+                        <input type="text"  class="form-control" id="txtFI" [(ngModel)]="etapa.fecha_inicio" readonly="true" placeholder="Fecha Inicio">
+                        <label for="txtFI">Fecha Inicio</label>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group" >
+                    <div class="form-label-group">
+                        <input type="text" class="form-control" id="txtFF" [(ngModel)]="etapa.fecha_fin" readonly="true" placeholder="Fecha Fin">
+                        <label for="txtFF">Fecha Fin</label>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12 text-right">
+                  <button class="btn btn-primary" [disabled]="!isEtapaSelected" (click)="createProjectGantt()">Mostrar Datos</button>
+                </div>
+              </div>
+              
+              <div class="col-xs-12" *ngIf="isGanttCreated">
+                  <span class="badge planificada">Planificada</span>
+                  <span class="badge real">Real</span>
+              </div>
+              <gantt *ngIf="isGanttCreated" [project]="projectGantt" [options]="options" (onGridRowClick)="gridRowClicked($event)" (editCronograma)="edit($event)"></gantt>
+              
+</div>
+
+<!-- <ng-template #contentCronograma>
+  <app-cronograma-detail-component  (saveCronograma)="submitCronograma($event)" [title]="title"
+                                    (closeCronograma)="closeCronograma($event)"
+                                    [Actividad]="Actividad"
+                                    [Resultado]="Resultado"
+                                    [Objetivo]="Objetivo"
+                                    [activeModal]="modalRef" [actividad]="actividad"
+  ></app-cronograma-detail-component>
+</ng-template> -->
+<!-- <app-loader-component [loading]="loading"></app-loader-component> -->

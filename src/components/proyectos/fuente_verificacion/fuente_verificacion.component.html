@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Fuentes de Verificación
+      <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir"
+              (click)="addFV()" 
+              [disabled]="showForm"
+              *ngIf="!isEjecucion"
+              style="float: right">
+        <i class="fa fa-plus"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col-md-1 col-xs-1 text-center">
+
+          </div>
+          <div class="col-md-3 col-xs-3 text-center form-group no-margin"><label class="label-cabecera">Código</label></div>
+          <div class="col-md-8 col-xs-8 text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+        </div>
+
+      </li>
+      <li class="list-group-item justify-content-between" *ngIf="showForm">
+        <form [formGroup]="frmFV" (submit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-2 col-xs-2 btn-group-sm" role="group">
+              <button type="submit"  class="btn btn-success" ngbTooltip="Guardar" placement="top"
+                      [disabled]="!frmFV.valid">
+                <i class="fa fa-check"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"  ngbTooltip="Limpìar Campos" placement="top"
+                      (click)="cancel()">
+                <i class="fa fa-remove"></i>
+              </button>
+            </div>
+            <div class="col-md-3 col-xs-3 form-group no-margin">
+              <input type="text" class="form-control"
+                     formControlName="codigo"
+                     placeholder="Código">
+              <div *ngIf="frmFV.get('codigo').invalid 
+                        && (frmFV.get('codigo').dirty || frmFV.get('codigo').touched)"
+                   class="alert alert-danger alert-form">
+                <span *ngIf="frmFV.get('codigo').hasError('required')">El campo código es obligatorio.</span>
+              </div>
+            </div>
+            <div class="col-md-7 col-xs-7 form-group no-margin">
+              <textarea  class="form-control"
+                         formControlName="descripcion"
+                     
+                        placeholder="Descripción"></textarea>
+              <div *ngIf="frmFV.get('descripcion').invalid 
+                          && (frmFV.get('descripcion').dirty || frmFV.get('descripcion').touched)"
+                   class="alert alert-danger alert-form">
+                <span *ngIf="frmFV.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let fv of fuentes_verificacion">
+        <div class="row">
+          <div class="col-md-3 col-xs-3 text-center btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary" [disabled]="showForm" ngbTooltip="Editar"
+                    placement="top"
+                    (click)="editFV(fv)" *ngIf="!isEjecucion">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" 
+                    (click)="openModalRemove(fv)" *ngIf="!isEjecucion">
+              <i class="fa fa-trash-o"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-sm" ngbTooltip="Agregar Documento Adjunto" placement="top" 
+                    (click)="openModalDocuments(fv)" *ngIf="isEjecucion">
+              <i class="fa fa-file-archive-o"></i>
+            </button>
+          </div>
+          <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+            {{fv.codigo}}
+          </div>
+          <div class="col-md-6 col-xs-6 text-center form-group no-margin">
+            {{fv.descripcion}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

@@ -1,0 +1,50 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmEstadoInforme" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtNombre" class="form-control" formControlName="nombre" placeholder="Nombre" appAutofocus>
+              <label for="txtNombre">Nombre</label>
+              <div *ngIf="frmEstadoInforme.get('nombre').invalid && (frmEstadoInforme.get('nombre').dirty || frmEstadoInforme.get('nombre').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmEstadoInforme.get('nombre').hasError('required')">El campo Nombre es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-xs-8 form-group">
+            <div class="form-label-group">
+              <select id="ddlEstados" class="form-control" formControlName="estado_siguiente" [compareWith]="compare">
+                <!-- <select class="form-control" formControlName="estado_siguiente"> -->
+                <option *ngIf="isNew" [value]="undefined" disabled [selected]="true">Estado Anterior</option>
+                <option value="null">Estado Inicial</option>
+                <option *ngFor="let estadoInforme of estadosInforme" [ngValue]="estadoInforme">{{estadoInforme.nombre}}</option>
+              </select>
+              <label for="ddlEstados">Estado Anterior</label>
+            </div>
+          </div>
+          <div class="col-md-4 col-xs-4 form-group">
+            <div class="btn-group btn-group-toggle">
+              <label ngbButtonLabel [ngClass]="{
+                'btn-success': frmEstadoInforme.get('final').value,
+                'btn-danger': !frmEstadoInforme.get('final').value
+                }">
+                <input type="checkbox" ngbButton formControlName="final"> Final
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmEstadoInforme.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

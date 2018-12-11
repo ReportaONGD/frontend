@@ -1,0 +1,40 @@
+<div [class]="modal-body">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="form-signin-heading">{{title}}</h2>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="frmConvocatoria" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 form-group">
+                        <div class="form-label-group">
+                            <input type="text" class="form-control" formControlName="codigo" id="txtCodigo" placeholder="Código" appAutofocus>
+                            <div *ngIf="frmConvocatoria.get('codigo').invalid
+                  && (frmConvocatoria.get('codigo').dirty || frmConvocatoria.get('codigo').touched)" class="alert alert-danger alert-form">
+                                <span *ngIf="frmConvocatoria.get('codigo').hasError('required')">El campo codigo es obligatorio.</span>
+                            </div>
+                            <label for="txtCodigo">Código</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 form-group">
+                        <div class="form-label-group">
+                            <input type="text" class="form-control" formControlName="nombre" id="txtNombre" placeholder="Nombre" appAutofocus>
+                            <div *ngIf="frmConvocatoria.get('nombre').invalid
+                  && (frmConvocatoria.get('nombre').dirty || frmConvocatoria.get('nombre').touched)" class="alert alert-danger alert-form">
+                                <span *ngIf="frmConvocatoria.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+                            </div>
+                            <label for="txtNombre">Nombre</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 form-group">
+                        <app-financiador-combo-component [item]="frmConvocatoria" [isMultiple]="false"></app-financiador-combo-component>
+                    </div>
+                    <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+                        <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmConvocatoria.valid">Guardar</button>
+                        <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

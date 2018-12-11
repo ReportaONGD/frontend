@@ -1,0 +1,100 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmPago" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <select formControlName="tipo_movimiento" id="ddlTipoMovimiento" [compareWith]="compareTipoMovimientoFn" class="form-control">
+                <option [ngValue]="null" disabled>Tipo Movimiento</option>
+                <option *ngFor="let tipo_mov of tipos_movimiento" [ngValue]="tipo_mov">{{tipo_mov.valor}}</option>
+              </select>
+              <label for="ddlTipoMovimiento">Tipo Movimiento</label>
+              <div *ngIf="frmPago.get('tipo_movimiento').invalid && (frmPago.get('tipo_movimiento').dirty || frmPago.get('tipo_movimiento').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPago.get('tipo_movimiento').hasError('required')">El campo tipo movimiento es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" formControlName="concepto" id="txtConceptoDet" placeholder="Concepto" appAutofocus>
+              <label for="txtConceptoDet">Concepto</label>
+              <div *ngIf="frmPago.get('concepto').invalid
+                  && (frmPago.get('concepto').dirty || frmPago.get('concepto').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPago.get('concepto').hasError('required')">El campo Concepto es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="cheque" class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea type="text" class="form-control" formControlName="num_cheque" id="txtNumChequeDet" placeholder="Nº Cheque"></textarea>
+              <label for="txtNumChequeDet">Nº Cheque</label>
+              <div *ngIf="frmPago.get('num_cheque').invalid
+                && (frmPago.get('num_cheque').dirty || frmPago.get('num_cheque').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPago.get('num_cheque').hasError('required')">El campo Número de Cheque es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input class="form-control" placeholder="Fecha" type="text" formControlName="_fecha" id="fechaDet" ngbDatepicker #fecha="ngbDatepicker"
+                [outsideDays]="hidden" [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+              <label for="fechaDet">Fecha</label>
+              <div *ngIf="frmPago.hasError('datediff') || (frmPago.get('_fecha').invalid 
+                && (frmPago.get('_fecha').dirty 
+                || frmPago.get('_fecha').touched))" class="alert alert-danger alert-form">
+                <span *ngIf="frmPago.get('_fecha').hasError('required')">El campo fecha es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-12 col-xs-12 form-group">
+            <app-cuenta-combo-component [item]="frmPago" [cuentas]="proyecto.cuentas_bancarias" [controlName]="'cuenta_origen'" [controlLabel]="'Cuenta Origen'"></app-cuenta-combo-component>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group input-group mb-3">
+              <input type="text" class="form-control" formControlName="importe" id="txtImporteDet" placeholder="Importe">
+              <div class="input-group-append">
+                <span class="input-group-text">{{moneda_origen}}</span>
+              </div>
+              <label for="txtImporteDet">Importe</label>
+              <div *ngIf="frmPago.get('importe').invalid
+                    && (frmPago.get('importe').dirty || frmPago.get('importe').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPago.get('importe').hasError('required')">El campo Importe es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="hay_destino"> 
+          <div class="col-md-12 col-xs-12 form-group">
+            <app-cuenta-combo-component [item]="frmPago" [cuentas]="proyecto.cuentas_bancarias" [controlName]="'cuenta_destino'" [controlLabel]="'Cuenta Destino'"></app-cuenta-combo-component>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group input-group mb-3">
+              <input type="text" class="form-control" formControlName="importe_enviado" id="txtImporteEnviadoDet" placeholder="Importe Enviado">
+              <div class="input-group-append">
+                <span class="input-group-text">{{moneda_destino}}</span>
+              </div>
+              <label for="txtImporteEnviadoDet">Importe Enviado</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmPago.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

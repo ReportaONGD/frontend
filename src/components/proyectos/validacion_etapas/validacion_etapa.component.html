@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Etapas
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <button class="btn btn-success btn-sm mb-auto" [disabled]="isDisabled" type="button" placement="left" ngbPopover="Las distintas etapas del proyecto con sus respectivas normas de cumplimentación para poder avanzar a la siguiente etapa."
+        style="float: right">
+        <i class="fa fa-plus"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6 col-xs-12" *ngFor="let etapa of etapas_validacion">
+        <div class="card">
+          <div class="card-header">
+            {{etapa.nombre}}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let definicion of etapa.definiciones">
+              {{definicion.nombre}}
+                <div class="col-md-12 col-xs-12" *ngFor="let regla of definicion.reglas">
+                    <a href="#" *ngIf="regla.route_link" [style]="setStyle(regla.resultado)" (click)="goTo(regla)">{{regla.mensaje}}</a>
+                    <label *ngIf="!regla.route_link" [style]="setStyle(regla.resultado)">{{regla.mensaje}}</label>
+                </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

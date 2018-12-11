@@ -1,0 +1,29 @@
+.btn-circle {
+  background-color: white;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border-color: black;
+}
+.btn-circle i {
+  color: black;
+}
+.menu-header {
+  background-color: black;
+}
+.menu-header a {
+  color: white;
+}
+.navbar-light .navbar-toggler {
+  color: rgb(0, 0, 0);
+  border-color: rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+.dropdown > .nav-link {
+  color: white;
+}
+.menuOpciones {
+  color: black !important;
+  font-size: .7em;
+  cursor: pointer;
+}

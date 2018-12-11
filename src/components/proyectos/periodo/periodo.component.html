@@ -1,0 +1,39 @@
+<ul class="list-group">
+  <li class="list-group-item justify-content-between">
+    <div class="row">
+      <div class="col-sm-2 text-center" *ngIf="!isEjecucion">
+        <button type="button" class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" ngbTooltip="Añadir" (click)="addPeriodo()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+      <div class="col text-center">Nombre</div>
+      <div class="col text-center">Tipo Periodo</div>
+      <div class="col text-center">F. Inicio</div>
+      <div class="col text-center">F. Fin</div>
+    </div>
+
+  </li>
+  <li class="list-group-item justify-content-between" *ngFor="let periodo of periodos let i = index">
+    <div class="row">
+      <div class="col-sm-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+        <button type="button" class="btn btn-primary btn-sm" (click)="editPeriodo(periodo)" placement="top" ngbTooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" placement="top" ngbTooltip="Eliminar" (click)="onDelete(periodo)">
+          <i class="fa  fa-trash-o"></i>
+        </button>
+      </div>
+      <div class="col text-center">{{periodo.nombre}}</div>
+      <div class="col text-center">{{periodo.tipo_periodo.nombre}}</div>
+      <div class="col text-center">{{ds.format(periodo._fecha_inicio)}}</div>
+      <div class="col text-center">{{ds.format(periodo._fecha_fin)}}</div>
+    </div>
+  </li>
+  <li class="list-group-item justify-content-between" *ngIf="showAlert() && !isEjecucion">
+    <div class="row">
+      <div class="col-md-12" style="padding: 10px 35px;">
+        <ngb-alert type='info'>No existe ningún periodo, pulse en el botón + para agregar una nuevo.</ngb-alert>
+      </div>
+    </div>
+  </li>
+</ul>

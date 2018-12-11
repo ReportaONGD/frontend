@@ -1,0 +1,142 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Listado de Bienes
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Agregue los bienes asociados al proyecto."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body" style="margin-top: 1rem">
+    <div class="col-xs-12" style="margin-bottom: 1rem" *ngIf="showForm">
+      <form (submit)="onSubmit()" [formGroup]="frmBien">
+        <div class="row">
+          <div class="col-md-3 col-xs-3 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtProveedor" class="form-control" formControlName="proveedor" placeholder="Proveedor" appAutofocus>
+              <label for="txtProveedor">Proveedor</label>
+              <div *ngIf="frmBien.get('proveedor').invalid && (frmBien.get('proveedor').dirty || frmBien.get('proveedor').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmBien.get('proveedor').hasError('required')">El campo proveedor es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="number" id="txtCantidad" class="form-control" formControlName="cantidad" placeholder="Cantidad">
+              <label for="txtCantidad">Cantidad</label>
+              <div *ngIf="frmBien.get('cantidad').invalid && (frmBien.get('cantidad').dirty || frmBien.get('cantidad').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmBien.get('cantidad').hasError('required')">El campo cantidad es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="number" id="txtImporte" class="form-control" formControlName="importe" placeholder="Importe">
+              <label for="txtImporte">Importe</label>
+              <div *ngIf="frmBien.get('importe').invalid && (frmBien.get('importe').dirty || frmBien.get('importe').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmBien.get('importe').hasError('required')">El campo importe es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+                <input class="form-control" id="txtFecha" placeholder="Fecha" type="text" formControlName="fecha" ngbDatepicker #fecha="ngbDatepicker"
+                  [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                    <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                  </button>
+                </div>
+                <label for="txtFecha">Fecha</label>
+            </div>
+            <div *ngIf="frmBien.get('fecha').invalid && (frmBien.get('fecha').dirty || frmBien.get('fecha').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmBien.get('fecha').hasError('required')">El campo fecha es obligatorio.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea type="text" id="txtDescripcion" class="form-control" formControlName="descripcion" placeholder="Descripción"></textarea>
+              <label for="txtDescripcion">Descripción</label>
+              <div *ngIf="frmBien.get('descripcion').invalid && (frmBien.get('descripcion').dirty || frmBien.get('descripcion').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmBien.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary" [disabled]="!frmBien.valid" type="submit">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="this.showForm = !this.showForm">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+    <ul class="list-group" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col">
+
+          </div>
+          <div class="col text-center text-center form-group no-margin">
+            <label class="label-cabecera">Proveedor</label>
+          </div>
+          <div class="col text-center text-center form-group no-margin">
+            <label class="label-cabecera">Descripción
+            </label>
+          </div>
+          <div class="col text-center text-center form-group no-margin">
+            <label class="label-cabecera">Cantidad</label>
+          </div>
+          <div class="col text-center text-center form-group no-margin">
+            <label class="label-cabecera">Importe</label>
+          </div>
+          <div class="col text-center text-center form-group no-margin">
+            <label class="label-cabecera">Fecha</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let bien of bienes">
+        <div class="row">
+          <div class="col btn-group-sm text-center" role="group">
+            <button type="button" class="btn btn-primary" [disabled]="isNew" ngbTooltip="Editar" placement="top" (click)="onEdit(bien)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(bien)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{bien.proveedor}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{bien.descripcion}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{bien.cantidad}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{bien.importe}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{ds.format(bien.fecha)}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <br>
+    <p *ngIf="showAlert()">
+      <ngb-alert type='info'>No existe ningún bien, pulse en el botón + para agregar una nueva.</ngb-alert>
+    </p>
+  </div>
+</div>

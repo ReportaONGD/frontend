@@ -1,0 +1,59 @@
+<div class="card">
+    <div class="card-header" role="tab" id="headingOne">
+        <h5 class="mb-0">
+            Resumen Gastos
+        </h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group" *ngIf="resumen_gasto | async">
+            <!-- <li class="list-group-item justify-content-between">
+                <div class="row">
+                    <div class="col text-left form-group no-margin">
+                        <label class="label-cabecera">Totales de Gastos por Partida</label>
+                    </div>
+                </div>
+            </li> -->
+            <li  class="list-group-item justify-content-between bg-secondary">
+                <div class="row">
+                    <div class="col text-center form-group no-margin">
+                        <label class="label-cabecera">Partida</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label class="label-cabecera">Presupuesto</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label class="label-cabecera">Gasto</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label class="label-cabecera">Pendiente</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label class="label-cabecera">Ejecutado (%)</label>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_gasto | async)">
+                <div class="row">
+                    <div class="col text-left form-group no-margin">
+                        <label class="label-cabecera">{{item.partida}}</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label >{{item.presupuesto}}</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label >{{item.gasto}}</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label >{{item.pendiente}}</label>
+                    </div>
+                    <div class="col text-center form-group no-margin">
+                        <label >{{item.ejecutado}}</label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ngb-alert *ngIf="!(resumen_gasto | async)" type="warning" [dismissible]="false">
+            No existen ni partidas ni gastos asociados al proyecto.
+        </ngb-alert>
+    </div>
+</div>

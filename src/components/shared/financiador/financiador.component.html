@@ -1,0 +1,15 @@
+<!-- [selected]="(isAecid | async) && financiador.nombre.toLowerCase() === 'aecid'" [disabled]="(isAecid | async) && financiador.nombre.toLowerCase() === 'aecid'" -->
+<div class="form-label-group" [formGroup]="item">
+  <select *ngIf="isMultiple" multiple formControlName="financiador" id="ddlFinanciador" [compareWith]="compareFn" class="form-control">
+    <option *ngFor="let financiador of financiadores"  [ngValue]="financiador">{{financiador.nombre}}</option>
+  </select>
+  <select *ngIf="!isMultiple" formControlName="financiador" id="ddlFinanciador" [compareWith]="compareFn" class="form-control">
+    <!-- <option [ngValue]="null" [selected]="true" disabled>Financiador</option> -->
+    <option *ngFor="let financiador of financiadores" [ngValue]="financiador">{{financiador.nombre}}</option>
+  </select>
+  <label for="ddlFinanciador">Financiador</label>
+  <div *ngIf="isRequired && (item.get('financiador').invalid && (item.get('financiador').dirty || item.get('financiador').touched))"
+    class="alert alert-danger alert-form">
+    <span>El campo financiador es obligatorio.</span>
+  </div>
+</div>

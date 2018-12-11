@@ -1,0 +1,38 @@
+<div class="card-block" *ngIf="objetivos_especificos && objetivos_especificos.length > 0">
+  <ul class="list-group">
+    <li class="list-group-item justify-content-between">
+      <div class="row">
+        <div class="col-md-3 text-center form-group no-margin"><label class="label-cabecera">Código</label></div>
+        <div class="col-md-7 text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+        <div class="col-md-2 text-center form-group no-margin"><label class="label-cabecera">Acciones</label></div>
+      </div>
+
+    </li>
+    <li class="list-group-item justify-content-between"
+        *ngFor="let objG of objetivos_especificos let ind = index" [class.fila-activa]="objG === objetivoEspecifico">
+      <div class="row"  (click)="select($event, objG)">
+        <div class="col-md-3 text-center form-group no-margin">
+          {{objG.codigo}}
+        </div>
+        <div class="col-md-7 text-center form-group no-margin">
+          {{objG.descripcion}}
+        </div>
+        <div class="col-md-2 col-xs-2 btn-group-sm text-center" role="group">
+          <button type="button" class="btn btn-success" ngbTooltip="Seleccionar Objetivo" placement="top"
+                  (click)="select($event, objG)">
+            <i class="fa fa-check-square-o"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-success" ngbTooltip="Añadir Resultado" placement="top"
+                  (click)="add($event, objG)">
+            <i class="fa fa-flag-checkered"></i>
+          </button> -->
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<ng-template [ngIf]="showAlert">
+  <div class="card-block form-project">
+    <app-alert-component [alert]="alert"></app-alert-component>
+  </div>
+</ng-template>

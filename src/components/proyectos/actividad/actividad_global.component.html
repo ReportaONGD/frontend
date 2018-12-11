@@ -1,0 +1,81 @@
+<div *ngIf="actividad | async" class="card">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Actividad Global
+    </h5>
+  </div>
+  <div class="card-block form-project">
+    <div [class]="row">
+      <form *ngIf="actividad | async" [formGroup]="frmActividad" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtCodigo" class="form-control" formControlName="codigo" placeholder="Código">
+              <label for="txtCodigo">Código</label>
+              <div *ngIf="frmActividad.controls.codigo.invalid 
+                    && (frmActividad.controls.codigo.dirty || frmActividad.controls.codigo.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmActividad.controls.codigo.hasError('required')">El campo código es obligatorio.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea type="text" id="txtDesc" class="form-control" formControlName="descripcion" placeholder="Descripción">
+                  </textarea>
+              <label for="txtDesc">Descripción</label>
+              <div *ngIf="frmActividad.controls.descripcion.invalid 
+                && (frmActividad.controls.descripcion.dirty || frmActividad.controls.descripcion.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmActividad.controls.descripcion.hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+            </div>
+
+          </div>
+          <!-- <div class="col-md-12 col-xs-12 form-group" style="margin-bottom: 2rem" *ngIf="existsActividad | async">
+            <app-recurso-component [ids]="ids" [isResultado]="false" [actividad]="actividad"></app-recurso-component>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group" *ngIf="!(existsActividad | async)">
+              <ngb-alert [dismissible]="false" type='info'>Solo se podrán agregar recursos una vez creada la actividad.</ngb-alert>
+          </div> -->
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea class="form-control" id="txtCom" formControlName="comentario" placeholder="Comentarios">
+                  </textarea>
+                  <label for="txtCom">Comentarios</label>
+            </div>
+
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea class="form-control" id="txtCONG" formControlName="comentarios_ong" placeholder="Comentarios Ong">
+                  </textarea>
+                  <label for="txtCONG">Comentarios Ong</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea id="txtCA" class="form-control" formControlName="comentarios_aecid" placeholder="Comentarios OTC/Dept Geo.">
+              </textarea>
+              <label for="txtCA">Comentarios OTC/Dept Geo</label>
+            </div>
+
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea class="form-control" id="txtCCP" formControlName="comentarios_costes_personal" placeholder="Comentarios Costes Persosnal">
+                  </textarea>
+              <label for="txtCCP">Comentarios Costes Personal</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" *ngIf="!isEjecucion" type="submit" [disabled]="!frmActividad.valid">Guardar
+          </button>
+          <button type="button" class="btn btn-outline-dark" *ngIf="isModal" (click)="close()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

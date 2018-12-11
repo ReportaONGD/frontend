@@ -1,0 +1,240 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Listado de Movimientos
+      <div class="btn-group" role="group" style="float:right">
+        <!-- <button type="button" class="btn btn-primary-secondary  btn-sm" placement="left" style="min-width: 29px" ngbTooltip="Volver."
+          (click)="goToCuentasBancarias()">
+          <i class="fa fa-mail-reply"></i>
+        </button> -->
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Agregue los movimientos bancarios asociados a una cuenta del proyecto."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" [disabled]="(showAlertCuentaBancaria | async)" type="button"
+          ngbTooltip="Añadir" (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <p class="p-4" *ngIf="!isEjecucion">
+    <ngb-alert *ngIf="showAlertCuentaBancaria | async" type='warning'>
+      No existe ninguna cuenta bancaria, pulse <a style="color: #007bff;cursor: pointer;" (click)="goTo()">aquí</a>
+      para agregar una nueva.</ngb-alert>
+    <ngb-alert type='info' *ngIf="showAlert() && !(showAlertCuentaBancaria | async)">No existe ninguna operación bancaria,
+      pulse en el botón + para agregar una nueva.</ngb-alert>
+  </p>
+  <div class="card-body pt-0" *ngIf="!showAlert() || showForm">
+    <div class="col-xs-12" style="margin-bottom: 1rem" *ngIf="showForm">
+      <form (submit)="onSubmit()" [formGroup]="frmOperacionBancaria">
+        <div class="row">
+          <!-- <div class=" col-md-4 col-xs-12 form-group">
+                    <div class="form-label-group">
+                      <input type="number" id="txtTCL" class="form-control" formControlName="tasa_cambio_local" placeholder="Tasa Cambio Local">
+                      <label for="txtTCL">Tasa Cambio Local</label> -->
+          <!-- <div *ngIf="frmOperacionBancaria.get('tasa_cambio_local').invalid && (frmOperacionBancaria.get('tasa_cambio_local').dirty || frmOperacionBancaria.get('tasa_cambio_local').touched)"
+                        class="alert alert-danger alert-form">
+                        <span *ngIf="frmOperacionBancaria.get('tasa_cambio_local').hasError('required')">El campo tasa cambio local es obligatorio.</span>
+                      </div> -->
+          <!-- </div>
+                  </div> -->
+          <!-- <div class=" col-md-4 col-xs-12 form-group">
+                     <div class="form-label-group">
+                      <input type="number" id="txtTCE" class="form-control" formControlName="tasa_cambio_euro" placeholder="Tasa Cambio Euro">
+                      <label for="txtTCE">Tasa Cambio Euro</label> -->
+          <!-- <div *ngIf="frmOperacionBancaria.get('tasa_cambio_euro').invalid && (frmOperacionBancaria.get('tasa_cambio_euro').dirty || frmOperacionBancaria.get('tasa_cambio_euro').touched)"
+                        class="alert alert-danger alert-form">
+                        <span *ngIf="frmOperacionBancaria.get('tasa_cambio_euro').hasError('required')">El campo tasa cambio euro es obligatorio.</span>
+                      </div> -->
+          <!-- </div>
+                  </div> -->
+          <div class=" col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea id="txtConcepto" class="form-control" formControlName="concepto" placeholder="Concepto"></textarea>
+              <label for="txtConcepto">Concepto</label>
+              <!-- <div *ngIf="frmOperacionBancaria.get('tasa_cambio_euro').invalid && (frmOperacionBancaria.get('tasa_cambio_euro').dirty || frmOperacionBancaria.get('tasa_cambio_euro').touched)"
+                        class="alert alert-danger alert-form">
+                        <span *ngIf="frmOperacionBancaria.get('tasa_cambio_euro').hasError('required')">El campo tasa cambio euro es obligatorio.</span>
+                      </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col-md-4 col-xs-12 form-group">
+            <app-financiador-combo-component [item]="frmOperacionBancaria"></app-financiador-combo-component>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="form-label-group">
+              <select formControlName="tipo_movimiento" id="ddlTipoMovimiento" [compareWith]="compareTipoMovimientoFn" class="form-control">
+                <option [ngValue]="null" disabled>Tipo Movimiento</option>
+                <option *ngFor="let tipo_mov of tipos_movimiento" [ngValue]="tipo_mov">{{tipo_mov.valor}}</option>
+              </select>
+              <label for="ddlTipoMovimiento">Tipo Movimiento</label>
+              <div *ngIf="frmOperacionBancaria.get('tipo_movimiento').invalid && (frmOperacionBancaria.get('tipo_movimiento').dirty || frmOperacionBancaria.get('tipo_movimiento').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmOperacionBancaria.get('tipo_movimiento').hasError('required')">El campo tipo movimiento es
+                  obligatorio.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <app-gasto-component [ids]="ids" [item]="frmOperacionBancaria" [isMultiple]="true"></app-gasto-component>
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input class="form-control" id="txtFecha" placeholder="Fecha" type="text" formControlName="fecha" ngbDatepicker #fecha="ngbDatepicker"
+                [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+              <label for="txtFecha">Fecha Envio</label>
+            </div>
+            <div *ngIf="frmOperacionBancaria.get('fecha').invalid && (frmOperacionBancaria.get('fecha').dirty || frmOperacionBancaria.get('fecha').touched)"
+              class="alert alert-danger alert-form">
+              <span *ngIf="frmOperacionBancaria.get('fecha').hasError('required')">El campo fecha es obligatorio.</span>
+            </div>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <app-cuenta-combo-component [item]="frmOperacionBancaria" [cuentas]="proyecto.cuentas_bancarias" [controlName]="'cuenta_origen'"
+              [controlLabel]="'Cuenta Origen'"></app-cuenta-combo-component>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input type="number" id="txtImporteEntrada" class="form-control" (blur)="calcularTasa()" (blur)="calcularTasa()" formControlName="importe"
+                placeholder="Importe Entrada">
+              <label for="txtImporteEntrada">Importe Entrada</label>
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{moneda_origen}}</span>
+              </div>
+              <div *ngIf="frmOperacionBancaria.get('importe').invalid && (frmOperacionBancaria.get('importe').dirty || frmOperacionBancaria.get('importe').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmOperacionBancaria.get('importe').hasError('required')">El campo importe entrada es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="hay_destino">
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input class="form-control" id="txtFechaEnvio" placeholder="Fecha Envio" type="text" formControlName="fecha_destino" ngbDatepicker
+                #fecha_destino="ngbDatepicker" [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fecha_destino.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+              <label for="txtFechaEnvio">Fecha Destino</label>
+            </div>
+            <div *ngIf="frmOperacionBancaria.get('fecha_destino').invalid && (frmOperacionBancaria.get('fecha_destino').dirty || frmOperacionBancaria.get('fecha_destino').touched)"
+              class="alert alert-danger alert-form">
+              <span *ngIf="frmOperacionBancaria.get('fecha_destino').hasError('required')">El campo fecha destino es obligatorio.</span>
+            </div>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <app-cuenta-combo-component [item]="frmOperacionBancaria" [cuentas]="proyecto.cuentas_bancarias" [controlName]="'cuenta_destino'"
+              [controlLabel]="'Cuenta Destino'"></app-cuenta-combo-component>
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input type="number" id="txtImporteTotal" class="form-control" (blur)="calcularTasa()" formControlName="importe_enviado"
+                placeholder="Importe Total">
+              <label for="txtImporteTotal">Importe Total</label>
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{moneda_destino}}</span>
+              </div>
+              <div *ngIf="frmOperacionBancaria.get('importe_enviado').invalid && (frmOperacionBancaria.get('importe_enviado').dirty || frmOperacionBancaria.get('importe_enviado').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmOperacionBancaria.get('importe_enviado').hasError('required')">El campo importe total es
+                  obligatorio.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col-md-4 col-xs-12 form-group float-label">
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+          </div>
+          <div class=" col-md-4 col-xs-12 form-group">
+            <div class="input-group form-label-group" *ngIf="hay_destino">
+              <input type="text" readonly class="form-control" disabled id="txtTasa" formControlName="tasa_cambio" value="{{tasa_cambio}}">
+              <label for="txtTasa">Tasa de cambio</label>
+            </div>
+          </div>
+        </div>
+        <div class=" col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary" [disabled]="!frmOperacionBancaria.valid" type="submit">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="showForm = !showForm">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+    <ul class="list-group" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-1 text-center"></div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Financiador</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Tipo Movimiento
+            </label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Fecha</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Importe</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Moneda</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Concepto</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let operacion_bancaria of operaciones_bancarias let i = index">
+        <div class="row">
+          <div class="p-0 col-md-1 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary" [disabled]="showForm" ngbTooltip="Editar" placement="top" (click)="onEditOB(operacion_bancaria)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(operacion_bancaria)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{operacion_bancaria.financiador.nombre}}</label>
+          </div>
+          <div class="col  text-center form-group no-margin">
+            <label>{{operacion_bancaria.tipo_movimiento.valor}}</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{ds.format(operacion_bancaria.fecha)}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{importeFormateado[i]}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{operacion_bancaria.cuenta_origen.moneda.codigo}}</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{operacion_bancaria.concepto}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</div>

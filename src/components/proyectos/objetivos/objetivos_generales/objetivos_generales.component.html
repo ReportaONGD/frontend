@@ -1,0 +1,110 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Objetivo General
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" 
+          placement="left" style="float:right" ngbPopover="Agregue un objetivo para poder generar los indicadores asociados."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button *ngIf="(emptyList()) && !isEjecucion"  class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" (click)="addNewObjetivo()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body form-proyecto-no-bottom inside" *ngIf="showForm">
+    <form (submit)="onSubmit()" [formGroup]="frmObjetivo">
+      <!--CODIGO DESCRIPCION-->
+      <div class="row">
+        <div class=" col-md-2 col-xs-12 form-group">
+          <div class="form-label-group">
+              <input type="text" id="txtCod" placeholder="Código" formControlName="codigo" class="form-control">
+              <label for="txtCod">Código</label>
+              <div *ngIf="frmObjetivo.get('codigo').invalid 
+            && (frmObjetivo.get('codigo').dirty || frmObjetivo.get('codigo').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmObjetivo.get('codigo').hasError('required')">El campo código es obligatorio.</span>
+              </div>
+          </div>
+         
+        </div>
+        
+        <div class=" col-md-5 col-xs-12 form-group">
+            <div class="form-label-group">
+                <input type="text" id="txtDesc" placeholder="Descripción" formControlName="descripcion" class="form-control">
+                <label for="txtDesc">Descripción</label>
+                <div *ngIf="frmObjetivo.get('descripcion').invalid 
+              && (frmObjetivo.get('descripcion').dirty || frmObjetivo.get('descripcion').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmObjetivo.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+                </div>
+            </div>
+          
+        </div>
+        
+        <div class=" col-md-3 col-xs-12 text-right">
+          <button class="btn btn-primary" [disabled]="!frmObjetivo.valid" type="submit">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="cancelSave()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card-body" *ngIf="!emptyList()">
+    <ul class="list-group-striped" style="padding: 0 1rem 0 1rem;">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-2 col-xs-3 text-center"></div>
+          <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            <label class="label-cabecera">Código</label>
+          </div>
+          <div class="p-0 col-md-8 col-xs-7 text-center form-group no-margin">
+            <label class="label-cabecera">Descripción</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between fila-activa">
+        <div class="row">
+          <div class="p-0 col-md-2 col-xs-3 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary" ngbTooltip="Editar" placement="top" (click)="editObjetivo(objetivo)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(objetivo)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="p-0 col-md-2 col-xs-2 text-center form-group no-margin">
+            {{objetivo.codigo}}
+          </div>
+          <div class="p-0 col-md-8 col-xs-7 text-center form-group no-margin">
+            {{objetivo.descripcion}}
+          </div>
+          
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="row card-block">
+    <!-- <div class="col-md-6 form-project" *ngIf="!emptyList()">
+      <app-fuente-verificacion-component  [ids]="ids" [service]="fuenteVerificacionService"></app-fuente-verificacion-component>
+    </div> -->
+    <div class="col-md-12" style="padding: 0rem 3rem;" *ngIf="!emptyList()">
+      <app-indicadores-component [ids]="ids" [isModal]="false" 
+      [service]="ogIndicadorService" 
+      [comentarios_service]="comentarios_service"
+      [documentos_service] = "documentos_service"
+      [fuente_verificacion_service]="fuenteVerificacionService" 
+      [medidas_service]="medidasService"></app-indicadores-component>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="!isEjecucion">
+    <p *ngIf="emptyList() && !isEjecucion">
+      <ngb-alert type='info'>No existe ningún Objetivo General, pulse en el botón + para agregar uno nuevo.</ngb-alert>
+    </p>
+  </div>
+</div>
+
+

@@ -1,0 +1,77 @@
+<ul class="list-group">
+  <li class="list-group-item justify-content-between">
+    <div class="row">
+      <div class="col-md-2 text-center" *ngIf="!isEjecucion">
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" type="button" ngbTooltip="Añadir" (click)="addNewModificacion()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+      <div class="col text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+      <div class="col text-center form-group no-margin"><label class="label-cabecera">Fecha</label></div>
+    </div>
+
+  </li>
+  <li class="list-group-item justify-content-between" *ngIf="isNewModificacion">
+    <form [formGroup]="frmModificacion">
+      <div class="row">
+        <div class="col-md-2 text-center btn-group-sm" role="group">
+          <button type="button" class="btn btn-success" ngbTooltip="Guardar" placement="top" [disabled]="!frmModificacion.valid" (click)="onSubmitModificacion()">
+            <i class="fa fa-check"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" ngbTooltip="Limpìar Campos" placement="top" (click)="cancel()">
+            <i class="fa fa-remove"></i>
+          </button>
+        </div>
+        <div class="col text-center form-group no-margin">
+          <input type="text" class="form-control" formControlName="descripcion" [(ngModel)]="mod.descripcion" placeholder="Descripción">
+          <div *ngIf="frmModificacion.controls.descripcion.invalid 
+              && (frmModificacion.controls.descripcion.dirty || frmModificacion.controls.descripcion.touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmModificacion.controls.descripcion.hasError('required')">El campo descripción es obligatorio.</span>
+          </div>
+        </div>
+        <div class="col text-center form-group no-margin">
+          <div class="input-group">
+            <input class="form-control" placeholder="Fecha" type="text" formControlName="_fecha" ngbDatepicker name="Fecha" [(ngModel)]="dateStructMod"
+              #fecha="ngbDatepicker" [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false" required>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="frmModificacion.controls._fecha.invalid 
+                && (frmModificacion.controls._fecha.dirty || frmModificacion.controls._fecha.touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmModificacion.controls._fecha.hasError('required')">La fecha es obligatoria.</span>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </li>
+
+  <li class="list-group-item justify-content-between" *ngFor="let modificacion of (modificaciones | async)">
+    <div class="row">
+      <div class="col-md-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+        <button type="button" class="btn btn-primary" [disabled]="isNewModificacion" ngbTooltip="Editar" placement="top" (click)="editModificacion(modificacion)">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(modificacion)">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+      <div class="col text-center form-group no-margin">
+        {{modificacion.descripcion}}
+      </div>
+      <div class="col text-center form-group no-margin">
+        {{modificacion.fecha | date: 'dd/MM/yyyy'}}
+      </div>
+    </div>
+  </li>
+  <li class="list-group-item justify-content-between" *ngIf="showAlert() && !isEjecucion">
+    <div class="row">
+      <div class="col-md-12" style="padding: 10px 35px;">
+        <ngb-alert type='info'>No existe ninguna modificación, pulse en el botón + para agregar una nueva.</ngb-alert>
+      </div>
+    </div>
+  </li>
+</ul>

@@ -1,0 +1,102 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Resumen Operaciones Bancarias
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+    </h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Nº Cuenta</label>
+          </div>
+
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Tipo
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Concepto
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Importe
+            </label>
+          </div>
+
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let item of (resumen_cuentas | async)">
+        <div class="row">
+          <div class="col text-left form-group no-margin">
+            <label>{{item.ncuenta}}</label>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let t of item.tipo">
+                <label>{{t.valor}} </label>
+            </div>
+          </div>
+          <div class="col text-left form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let c of item.concepto">
+                <label>{{c}}</label>
+            </div>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <div class="col-md-12 col-xs-12" *ngFor="let i of item.importe">
+              <label class="label-cabecera">{{i}}</label>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="card" style="margin-top: 2rem" *ngIf="(resumen_cuentas | async)">
+      <div class="card-header" role="tab" id="headingTwo">
+        <h5 class="mb-0">
+          Totales
+          <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+        </h5>
+      </div>
+      <div class="card-block form-project">
+        <ul class="list-group">
+          <li class="list-group-item justify-content-between bg-secondary">
+            <div class="row">
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">Nº Cuenta</label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">Total Ingresos</label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">Total Retiradas
+                </label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">Saldo Actual
+                </label>
+              </div>
+
+            </div>
+          </li>
+          <li class="list-group-item justify-content-between" *ngFor="let total of totales">
+            <div class="row">
+              <div class="col text-left form-group no-margin">
+                <label class="label-cabecera">{{total.ncuenta}}</label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">{{total.totalIngresos}}</label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera">{{total.totalRetiradas}}</label>
+              </div>
+              <div class="col text-center form-group no-margin">
+                <label class="label-cabecera"> {{total.saldoActual}}</label>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

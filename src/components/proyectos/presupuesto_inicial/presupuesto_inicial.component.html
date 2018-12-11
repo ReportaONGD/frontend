@@ -1,0 +1,128 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Listado de Presupuesto/Partida/Actividad
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" 
+          ngbPopover="Listado de presupuestos del proyecto, ligados a una partida y una actividad previamente definidas."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" 
+                [disabled]="(showPartida | async) || (showActividad | async) || (showEtapa | async)"
+                type="button" ngbTooltip="Añadir" (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body">
+    <p  *ngIf="!isEjecucion">
+    <ng-template [ngIf]="(showAlert | async) && (!(showActividad | async) && !(showPartida | async) && !(showEtapa | async)) && !isEjecucion">
+      <app-alert-component [alert]="alert"></app-alert-component>
+    </ng-template>
+    <ngb-alert *ngIf="showActividad | async" type='warning'>No existe ninguna Actividad, pulse <a style="color: #007bff; cursor: pointer;" (click)="goTo('a')">aquí </a> para agregar una nueva.</ngb-alert>
+    <ngb-alert *ngIf="showPartida | async" type='warning'>No existe ninguna Partida, pulse <a  style="color: #007bff; cursor: pointer;" (click)="goTo('p')">aquí </a> para agregar una nueva.</ngb-alert>
+    <ngb-alert *ngIf="showEtapa | async" type='warning'>No existe ninguna Etapa, pulse <a style="color: #007bff; cursor: pointer;"  (click)="goTo('e')">aquí </a> para agregar una nueva.</ngb-alert>
+    </p>
+    <ul class="list-group" *ngIf="!(showAlert | async)">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-1 text-center"></div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Etapa</label>
+          </div>
+          <div class="p-0 col-md-4 text-center form-group no-margin">
+            <label class="label-cabecera">Partida</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label class="label-cabecera">Actividad</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">País</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Importe</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label class="label-cabecera">Moneda</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let presupuesto of presupuestos let i = index">
+        <div class="row">
+          <div class="p-0 col-md-1  btn-group-sm text-center" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary btn-sm" ngbTooltip="Editar" placement="top" (click)="edit(presupuesto)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(presupuesto)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{presupuesto.etapa.nombre}}</label>
+          </div>
+          <div class="p-0 col-md-4 text-center form-group no-margin" ngbPopover=" {{presupuesto.partida.nombre}}" triggers="mouseenter:mouseleave"
+            popoverTitle="Partida">
+            <label>{{(presupuesto.partida.nombre.length > 45) ? (presupuesto.partida.nombre | slice:0:45) + '...' : (presupuesto.partida.nombre)}}</label>
+          </div>
+          <div class="p-0 col-md-2 text-center form-group no-margin">
+            <label>{{presupuesto.actividad.codigo}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{presupuesto.pais.valor}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{importeFormateado[i]}}</label>
+          </div>
+          <div class="p-0 col-md-1 text-center form-group no-margin">
+            <label>{{presupuesto.moneda.codigo}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="card" style="margin-top: 2rem" *ngIf="!(showAlert | async)">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Totales Presupuesto/Partida
+      <i class="fa fa-spinner fa-spin" *ngIf="isloading"></i>
+    </h5>
+  </div>
+  <div class="card-block form-project">
+    <div class="row">
+      <div class="p-0 col-md-12 col-xs-12 text-left" *ngFor="let key of keysPartidas">
+        <label *ngFor="let entry of totalsPartidas[key] | sumas:key ">
+          {{key}}:
+          <strong>{{entry.value}}</strong>
+        </label>
+      </div>
+      <!-- <div class="p-0 col-md-12 col-xs-12 text-right" style="font-size: 1.5em">
+        <strong>Total: {{totalSum}}</strong>
+      </div> -->
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-top: 2rem" *ngIf="!(showAlert | async)">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Totales Presupuesto/Actividad
+      <i class="fa fa-spinner fa-spin" *ngIf="isloading"></i>
+    </h5>
+  </div>
+  <div class="card-block form-project">
+    <div class="row">
+      <div class="p-0 col-md-12 col-xs-12 text-left" *ngFor="let key of keysActividad">
+        <label *ngFor="let entry of totalsActividades[key] | sumas:key ">
+          {{key}}:
+          <strong>{{entry.value}}</strong>
+        </label>
+      </div>
+      <div class="p-0 col-md-12 col-xs-12 text-right" style="font-size: 1.5em">
+        <strong>Total: {{totalSum}}</strong>
+      </div>
+    </div>
+  </div>
+</div>

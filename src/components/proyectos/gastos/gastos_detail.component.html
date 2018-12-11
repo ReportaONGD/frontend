@@ -1,0 +1,132 @@
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="form-signin-heading">{{title}}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmGasto" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtNOrden" class="form-control" formControlName="numero_orden" placeholder="Nº Orden">
+              <label for="txtNOrden">Nº Orden</label>
+              <div *ngIf="frmGasto.controls.numero_orden.invalid 
+                            && (frmGasto.controls.numero_orden.dirty || frmGasto.controls.numero_orden.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.controls.numero_orden.hasError('required')">El campo nº orden es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtEmisor" class="form-control" formControlName="emisor" placeholder="Emisor">
+              <label for="txtEmisor">Emisor</label>
+              <div *ngIf="frmGasto.controls.emisor.invalid 
+                                && (frmGasto.controls.emisor.dirty || frmGasto.controls.emisor.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.controls.emisor.hasError('required')">El campo emisor es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-partida-combo-component [ids]="ids" [isRequired]="true" [item]="frmGasto"></app-partida-combo-component>
+            <!-- <div class="form-label-group">
+              <select formControlName="partida" id="ddlPartida" [compareWith]="comparePartidaFn" class="form-control">
+                <option [ngValue]="null" [selected]="true" disabled>Partida</option>
+                <option *ngFor="let partida of partidas" [ngValue]="partida">{{partida.nombre}}</option>
+              </select>
+              <label for="ddlPartida">Partida</label>
+              <div *ngIf="frmGasto.get('partida').invalid 
+                          && (frmGasto.get('partida').dirty || frmGasto.get('partida').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.get('partida').hasError('required')">El campo partida es obligatorio.</span>
+              </div>
+            </div> -->
+
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-actividad-combo-component [ids]="ids" [isRequired]="true" [item]="frmGasto"></app-actividad-combo-component>
+            <!-- <div class="form-label-group">
+              <select formControlName="actividad" [compareWith]="compareActividadFn" class="form-control">
+                <option [ngValue]="null" [selected]="true" disabled>Actividad</option>
+                <option *ngFor="let actividad of actividades" [ngValue]="actividad">{{actividad.codigo}}</option>
+              </select>
+              <label for="ddlActividad">Actividad</label>
+              <div *ngIf="frmGasto.get('actividad').invalid 
+                          && (frmGasto.get('actividad').dirty || frmGasto.get('actividad').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.get('actividad').hasError('required')">El campo actividad es obligatorio.</span>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-financiador-combo-component [financiadores]="proyecto.financiador" [item]="frmGasto"></app-financiador-combo-component>
+            <!-- <div class="form-label-group">
+              <select formControlName="financiador" id="ddlFinanciador" [compareWith]="compareFinanciadorFn" class="form-control">
+                <option [ngValue]="null" [selected]="true" disabled>Financiador</option>
+                <option *ngFor="let financiador of financiadores" [ngValue]="financiador">{{financiador.valor}}</option>
+              </select>
+              <label for="ddlFinanciador">Financiador</label>
+              <div *ngIf="frmGasto.get('financiador').invalid 
+                                  && (frmGasto.get('financiador').dirty || frmGasto.get('financiador').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.get('financiador').hasError('required')">El campo financiador es obligatorio.</span>
+              </div>
+            </div> -->
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-moneda-component [item]="frmGasto" [isRequired]="true"></app-moneda-component>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="number" id="txtImporte" class="form-control" formControlName="importe_local" placeholder="Importe">
+              <label for="txtImporte">Importe</label>
+              <div *ngIf="frmGasto.controls.importe_local.invalid 
+                          && (frmGasto.controls.importe_local.dirty || frmGasto.controls.importe_local.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.controls.importe_local.hasError('required')">El campo importe es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="input-group form-label-group">
+              <input class="form-control" id="txtFecha" placeholder="Fecha" type="text" formControlName="_fecha" ngbDatepicker #fecha="ngbDatepicker"
+                [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+              <label for="txtFecha">Fecha</label>
+            </div>
+            <div *ngIf="frmGasto.get('_fecha').invalid && (frmGasto.get('_fecha').dirty || frmGasto.get('_fecha').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmGasto.get('_fecha').hasError('required')">El campo fecha es obligatorio.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea type="text" id="txtConcepto" class="form-control" formControlName="concepto" placeholder="Concepto"></textarea>
+              <label for="txtConcepto">Concepto</label>
+              <div *ngIf="frmGasto.controls.concepto.invalid 
+                                  && (frmGasto.controls.concepto.dirty || frmGasto.controls.concepto.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmGasto.controls.concepto.hasError('required')">El campo concepto es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12">
+            <app-pago-component *ngIf="!isNew()" [ids]="ids"></app-pago-component>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 10px 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmGasto.valid">Guardar
+          </button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Volver</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

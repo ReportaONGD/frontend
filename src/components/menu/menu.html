@@ -1,0 +1,83 @@
+<header class="navbar navbar-light navbar-fixed-top navbar-expand-lg menu-header">
+
+  <a class="navbar-brand" [routerLink]="['/home']" (click)="navbarCollapsed = true">GONG-R</a>
+
+  <button class="navbar-toggler navbar-toggler-left" type="button" (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!--[routerLink]="['/categorias']" (click)="navbarCollapsed = true"-->
+  <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-fill" [routerLinkActive]="['active']" *ngFor="let item of menu">
+        <ng-template [ngIf]="item.hasChilds" [ngIfElse]="simpleLink">
+          <div ngbDropdown class="d-inline-block" *ngIf="item.display">
+            <a class="nav-link dropdown-toggle" [routerLinkActive]="['active']" id="dropdownProyectos" style="cursor: pointer" ngbDropdownToggle>{{item.titleLink}}</a>
+            <div ngbDropdownMenu aria-labelledby="dropdownProyectos" style="min-width: 170px;text-align: center;">
+              <a class="nav-link" style="cursor: pointer" (click)="goTo(link.route)" *ngFor="let link of item.childrens">
+                {{link.titleLink}}
+              </a>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #simpleLink>
+          <a class="nav-link" *ngIf="item.display" style="cursor: pointer" (click)="goTo(item.route)">{{item.titleLink}}</a>
+        </ng-template>
+      </li>
+      <!-- <li class="nav-item" [routerLinkActive]="['active']">
+        <div ngbDropdown class="d-inline-block">
+          <a class="nav-link dropdown-toggle" id="dropdownCatalogos" style="cursor: pointer" ngbDropdownToggle>Catálogos</a>
+          <div ngbDropdownMenu aria-labelledby="dropdownCatalogos">
+            <a class="nav-link" [routerLink]="['/categorias']" (click)="navbarCollapsed = true">Categorías</a>
+            <a class="nav-link" [routerLink]="['/cofinanciadores']" (click)="navbarCollapsed = true">Co-financiadores</a>
+            <a class="nav-link" [routerLink]="['/contratos']" (click)="navbarCollapsed = true">Contratos</a>
+            <a class="nav-link" [routerLink]="['/estados-informe']" (click)="navbarCollapsed = true">Estados Informe</a>
+            <a class="nav-link" [routerLink]="['/localizacion']" (click)="navbarCollapsed = true">Localización</a>
+            <a class="nav-link" [routerLink]="['/tipo-movimiento']" (click)="navbarCollapsed = true">Tipos Movimientos</a>
+            <a class="nav-link" [routerLink]="['/tipo-valoracion']" (click)="navbarCollapsed = true">Tipos Valoración</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" >
+        <a class="nav-link" [routerLink]="['/usuarios']" (click)="navbarCollapsed = true">Usuarios</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']"  >
+        <a class="nav-link" [routerLink]="['/empresas']" (click)="navbarCollapsed = true">Empresas</a>
+      </li>-->
+    </ul>
+
+  </div>
+  <div class="nav justify-content-end">
+    <!-- <a class="btn btn-circle btn-primary mr-3 d-flex justify-content-center align-items-center" [routerLink]="['/login']" placement="bottom"
+      ngbTooltip="Login">
+      <i class="fa fa-user-circle"></i>
+    </a> -->
+    <a class="btn btn-circle btn-primary mr-3 d-flex justify-content-center align-items-center" placement="bottom" ngbTooltip="Configuración"
+      role="button" [attr.aria-expanded]="!isCollapse" (click)="isCollapse = !isCollapse" aria-controls="collapseOptions">
+      <i class="fa fa-gears"></i>
+    </a>
+    <a class="btn btn-circle btn-primary mr-3 d-flex justify-content-center align-items-center" placement="bottom" ngbTooltip="Cerrar Sesión"
+      (click)="logout()">
+      <i class="fa fa-close"></i>
+    </a>
+    <div class="col-md-3 collapse" id="collapseOptions" [ngbCollapse]="isCollapse" style="position: absolute; top: 50px; right: 0px; z-index: 30;">
+      <div class="card">
+        <div class="card-header text-center">
+          <h5>Menú de Opciones</h5>
+        </div>
+        <div class="card-body" style="padding:1.25rem 0.5rem">
+          <div class="row">
+              <div class="col-md-6 col-xs-12 text-left">
+                  <a (click)="openChangePass()" class="menuOpciones"><i class="fa fa-user-secret"></i> Cambiar Contraseña</a>
+              </div>
+              <div class="col-md-6 col-xs-12 text-center"  style="padding: 0">
+                <a (click)="openEditUser()" class="menuOpciones"><i class="fa fa-user-circle"></i> Modificar Datos Personales</a>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</header>

@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Actividades
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <button class="btn btn-success btn-sm mb-auto" [disabled]="(showEtapa | async)" type="button" ngbTooltip="Añadir"
+              (click)="addNewActividad()" *ngIf="!isEjecucion"  style="float: right">
+        <i class="fa fa-plus"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-body">
+    <p>
+      <ngb-alert *ngIf="showAlert() && !(showEtapa | async)" type='warning'>
+        No existe ninguna Actividad, pulse en el botón + para agregar una nuevo.</ngb-alert>
+      <ngb-alert *ngIf="showEtapa | async" type='warning'>No existe ninguna Etapa, pulse <a style="color: #007bff; cursor: pointer;"
+          (click)="goTo()">aquí </a> para agregar una nueva.</ngb-alert>
+    </p>
+    <ul class="list-group" *ngIf="!showAlert()">
+
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col-md-3 text-center col-xs-3"></div>
+          <div class="col-md-2 col-xs-2 text-center form-group no-margin"><label class="label-cabecera">Código</label></div>
+          <div class="col-md-7 col-xs-7 text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let actividad of actividades">
+        <div class="row">
+          <div class="col-md-3 col-xs-3 text-center btn-group-sm" role="group" >
+            <button type="button" class="btn btn-success btn-sm" ngbTooltip="Añadir Periodos Previstos y Reales" placement="top"
+                    (click)="addCronograma(actividad)">
+              <i class="fa fa-calendar-plus-o"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm"  ngbTooltip="Editar" placement="top"
+                    (click)="editActividad(actividad)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" ngbTooltip="Eliminar" placement="top"
+                    (click)="openModalRemove(actividad)" *ngIf="!isEjecucion">
+              <i class="fa fa-trash-o"></i>
+            </button>
+            <button type="button" class="btn btn-success" ngbTooltip="Comentarios" placement="top" (click)="addNewComentario(actividad)" *ngIf="isEjecucion">
+                <i class="fa fa-comments"></i>
+            </button>
+          </div>
+          <div class="col-md-2 col-xs-2 text-center form-group no-margin"><label>{{actividad.codigo}}</label></div>
+          <div class="col-md-7 col-xs-7 text-center form-group no-margin"><label>{{actividad.descripcion}}</label></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+

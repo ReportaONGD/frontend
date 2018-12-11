@@ -1,0 +1,10 @@
+<div class="form-label-group" [formGroup]="item">
+    <select id="ddl{{controlName}}" formControlName="{{controlName}}" [compareWith]="compareFn" class="form-control">
+      <option *ngFor="let cuenta of cuentas" [ngValue]="cuenta">{{cuenta.entidad}}</option>
+    </select>
+    <label for="ddl{{controlName}}">{{controlLabel}}</label>
+    <div *ngIf="item.get(controlName).invalid && (item.get(controlName).dirty || item.get(controlName).touched)" class="alert alert-danger alert-form">
+      <span *ngIf="item.get(controlName).hasError('required')">El campo cuenta es obligatorio.</span>
+    </div>
+</div>
+  

@@ -1,0 +1,58 @@
+<div class="card card-login">
+  <div class="card-header">
+    <h2 class="form-signin-heading">Introduzca sus datos</h2>
+  </div>
+  <div class="card-body">
+    <form class="form-signin" data-dpmaxz-eid="1" (submit)="onSubmit()" #formLogin="ngForm">
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span style="min-width: 92px" class="input-group-text">Usuario</span>
+        </div>
+        <input [(ngModel)]="usuario.email" type="email"
+               required
+               id="nombre"
+               name="nombre"
+               class="form-control"
+               #nombre="ngModel"
+               placeholder="usuario(email)">
+        <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)" class="alert alert-login alert-danger">
+          <span *ngIf="nombre?.errors.required">El campo usuario es obligatorio.</span>
+          <span *ngIf="nombre?.errors.email">Formato de email no valido.</span>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Password</span>
+        </div>
+        <input [(ngModel)]="usuario.password" type="password"
+               required
+               id="password"
+               name="password"
+               class="form-control"
+               #password="ngModel"
+               placeholder="password">
+        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+             class="alert alert-login alert-danger">
+          <span *ngIf="password?.errors.required">El campo password es obligatorio.</span>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <a style="color: #007bff;cursor: pointer;" (click)="resetPassword()">Recuperar contraseña</a>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" [disabled]="!formLogin.valid" type="submit"
+              data-dpmaxz-eid="5">Enviar
+      </button>
+    </form>
+  </div>
+  <div class="row" style="margin: 1rem 0">
+    <div class="col-md-6 col-xs-6 text-center">
+        <img class="img-fluid" src="../../assets/img/logo_gobierno.jpg"/>
+        <img class="img-fluid" src="../../assets/img/logo_ministerio.jpg" style="margin-left: -4px;"/>
+        <img class="img-fluid" src="../../assets/img/logo_aecid.png" style="margin-left: -4px;"/>
+    </div>
+    <div class="col-md-6 col-xs-6 text-center">
+        <img class="img-fluid" style="height: 71px;" src="../../assets/img/ministero-red.es-01.jpg"/>
+    </div>
+  </div>
+</div>

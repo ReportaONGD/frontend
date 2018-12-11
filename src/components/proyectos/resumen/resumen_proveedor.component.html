@@ -1,0 +1,32 @@
+<div class="card" style="margin-top: 2rem" *ngIf="!(showAlert | async)">
+  <div class="card-header" role="tab" id="headingTwo">
+    <h5 class="mb-0">
+      Totales por Proveedor
+      <i class="fa fa-spinner fa-spin" *ngIf="isloading"></i>
+    </h5>
+  </div>
+  <div class="card-block form-project">
+    <ul class="list-group" *ngIf="!(showAlert | async)">
+      <li class="list-group-item justify-content-between bg-secondary">
+        <div class="row">
+          <div class="col-md-6 col-xs-6 text-center form-group no-margin">
+            <label class="label-cabecera">Proveedor</label>
+          </div>
+          <div class="col-md-6 col-xs-6 text-center form-group no-margin">
+            <label class="label-cabecera">Total</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let key of keysProveedor">
+        <div class="row" *ngFor="let entry of totalsProveedores[key] | sumas:key ">
+          <div class="col-md-6 col-xs-6 form-group no-margin">
+            <label>{{key}}</label>
+          </div>
+          <div class="col-md-6 col-xs-6 text-center form-group no-margin">
+            <label class="label-cabecera">{{entry.value}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

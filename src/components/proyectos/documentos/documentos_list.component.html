@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="card-header" role="tab" id="headingOne">
+      <h5 class="mb-0">
+        Listado de Documentos asociadas al proyecto
+        <div class="btn-group" role="group" style="float:right">
+          <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Listado de documentos asociados al proyecto."
+            popoverTitle="Información">
+            <i class="fa fa-info"></i>
+          </button>
+          <!-- <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" (click)="add()">
+            <i class="fa fa-plus"></i>
+          </button> -->
+        </div>
+      </h5>
+    </div>
+    <div class="card-body">
+      <ul class="list-group" *ngIf="!showAlert()">
+        <li class="list-group-item justify-content-between">
+          <div class="row">
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Nombre</label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Fecha
+              </label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Adjunto Gasto
+              </label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Adjunto F. Verificación
+              </label>
+            </div>
+            <div class="col-md-1 col-xs-1 text-center form-group no-margin">
+               
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item justify-content-between" *ngFor="let documento of documentos">
+          <div class="row">
+            
+            <div class="col text-center form-group no-margin">
+              <label>{{documento.nombre}}</label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label>{{documento.fecha}}</label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <i class="fa fa-check" *ngIf="documento.es_gasto"></i>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <i class="fa fa-check" *ngIf="!documento.es_gasto"></i>
+            </div>
+            <div class="col-md-1 col-xs-1 text-center form-group no-margin">
+                <button class="btn btn-success btn-sm mb-auto" type="button" 
+                        ngbTooltip="Descargar" (click)="download(documento)">
+                    <i class="fa fa-download"></i>
+                  </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p *ngIf="showAlert()">
+        <ngb-alert type='info'>No existe ningún documento asociado a gastos o fuentes de verificación.</ngb-alert>
+      </p>
+    </div>
+  </div>

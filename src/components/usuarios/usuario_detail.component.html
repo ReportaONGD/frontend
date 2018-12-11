@@ -1,0 +1,52 @@
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">Edición Datos Usuario</h2>
+    </div>
+    <div class="card-body">
+      <div class="col-xs-12" style="margin-bottom: 1rem">
+        <form [formGroup]="frmUsuario">
+          <div class="row">
+            <div class="col-md-12 col-xs-12 form-group">
+              <label for="txtUser">Usuario</label>
+              <input type="text" id="txtUser" class="form-control" formControlName="username" placeholder="Usuario">
+              <div *ngIf="frmUsuario.controls.username.invalid 
+                              && (frmUsuario.controls.username.dirty || frmUsuario.controls.username.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmUsuario.controls.username.hasError('required')">El campo usuario es obligatorio.</span>
+
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 form-group">
+              <label for="txtEmail">Email</label>
+              <input type="text" id="txtEmail" class="form-control" formControlName="email" placeholder="Email">
+              <div *ngIf="frmUsuario.controls.email.invalid 
+                               && (frmUsuario.controls.email.dirty || frmUsuario.controls.email.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmUsuario.controls.email.hasError('required')">El campo email es obligatorio.</span>
+
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 form-group text-right">
+                <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="admin" *ngIf="usuario.admin">
+                    <label ngbButtonLabel class="btn btn-outline-dark">
+                      Administrador
+                    </label>
+                    <label ngbButtonLabel class="btn-primary">
+                      <input ngbButton type="radio" [value]="true"> Si
+                    </label>
+                    <label ngbButtonLabel class="btn-primary">
+                      <input ngbButton type="radio" [value]="false"> No
+                    </label>
+                  </div>
+            </div>
+            <div class="col-md-12 col-xs-12 text-right">
+              <button class="btn btn-primary" [disabled]="!frmUsuario.valid" type="button" (click)="edit()">Guardar
+              </button>
+              <button class="btn btn-outline-dark" type="button" (click)="this.close()">Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

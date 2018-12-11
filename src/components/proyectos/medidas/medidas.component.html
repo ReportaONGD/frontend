@@ -1,0 +1,105 @@
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item justify-content-between">
+          <div class="row">
+            <div class="col-md-1 col-xs-1 text-center">
+              <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" (click)="addNew()">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Valor</label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Comentario</label>
+            </div>
+            <div class="col text-center form-group no-margin">
+              <label class="label-cabecera">Fecha</label>
+            </div>
+          </div>
+
+        </li>
+        <li class="list-group-item justify-content-between" *ngIf="isNew">
+          <form [formGroup]="frmMedida">
+            <div class="row">
+              <div class="col-md-2 col-xs-2 btn-group-sm" role="group">
+                <button type="button" class="btn btn-success" ngbTooltip="Guardar" placement="top" [disabled]="!frmMedida.valid" (click)="onSubmit()">
+                  <i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-secondary" ngbTooltip="Limpìar Campos" placement="top" (click)="cancel()">
+                  <i class="fa fa-remove"></i>
+                </button>
+              </div>
+              <div class="col form-group no-margin">
+                <input type="number" class="form-control" formControlName="valor" placeholder="Valor">
+                <div *ngIf="frmMedida.controls.valor.invalid 
+                          && (frmMedida.controls.valor.dirty || frmMedida.controls.valor.touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmMedida.controls.valor.hasError('required')">El campo valor es obligatorio.</span>
+                </div>
+              </div>
+              <div class="col form-group no-margin">
+                <textarea class="form-control" formControlName="comentario" placeholder="Comentario"></textarea>
+                <div *ngIf="frmMedida.controls.comentario.invalid 
+                            && (frmMedida.controls.comentario.dirty || frmMedida.controls.comentario.touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmMedida.controls.comentario.hasError('required')">El campo comentario es obligatorio.</span>
+                </div>
+              </div>
+              <div class="col form-group no-margin">
+                <div class="input-group">
+                  <input class="form-control" placeholder="Fecha" type="text" formControlName="fecha" ngbDatepicker name="Fecha" #fecha="ngbDatepicker"
+                    [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" (click)="fecha.toggle()" type="button">
+                      <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                    </button>
+                  </div>
+                </div>
+                <div *ngIf="frmMedida.controls.fecha.invalid 
+                            && (frmMedida.controls.fecha.dirty || frmMedida.controls.fecha.touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmMedida.controls.fecha.hasError('required')">El campo fecha es obligatorio.</span>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </li>
+
+        <li class="list-group-item justify-content-between" *ngFor="let medida of medidas let i = index">
+          <div class="row">
+            <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group">
+              <button type="button" class="btn btn-primary" [disabled]="isNew" ngbTooltip="Editar" placement="top" (click)="onEdit(medida)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(medida)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+            <div class="col text-center form-group no-margin">
+              {{medida.valor}}
+            </div>
+            <div class="col text-center form-group no-margin">
+              {{medida.comentario}}
+            </div>
+            <div class="col text-center form-group no-margin">
+              {{ds.format(medida.fecha)}}
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item justify-content-between">
+          <p>
+            <ngb-alert *ngIf="showAlert()" type='warning'>
+              No existe ninguna medida, pulse en el botón + para agregar una nueva.</ngb-alert>
+          </p>
+          <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+            <button type="button" class="btn btn-outline-dark" (click)="close()">Cerrar</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

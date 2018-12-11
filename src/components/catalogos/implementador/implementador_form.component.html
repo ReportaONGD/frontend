@@ -1,0 +1,53 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmImplementador" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" formControlName="nombre" id="ddlNombre" placeholder="Nombre" appAutofocus>
+              <div *ngIf="frmImplementador.get('nombre').invalid
+                      && (frmImplementador.get('nombre').dirty || frmImplementador.get('nombre').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmImplementador.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+              </div>
+              <label for="ddlNombre">Nombre</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" formControlName="descripcion" id="ddlDesc" placeholder="Descripción">
+              <div *ngIf="frmImplementador.get('descripcion').invalid
+                    && (frmImplementador.get('descripcion').dirty || frmImplementador.get('descripcion').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmImplementador.get('descripcion').hasError('required')">El campo descripcion es obligatorio.</span>
+              </div>
+              <label for="ddlDesc">Descripción</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <app-paises-component [item]="frmImplementador" [isMultiple]="false"></app-paises-component>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="publico">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Público
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Sí
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+            <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmImplementador.valid">Guardar</button>
+            <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

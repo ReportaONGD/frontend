@@ -1,0 +1,121 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Usuarios
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Agregue usuarios asociados a su organización."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" (click)="addNewUser()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="col-xs-12" style="margin-bottom: 1rem" *ngIf="isNewUsuario">
+      <form [formGroup]="frmUsuario">
+        <div class="row">
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtUserName" class="form-control" formControlName="username" placeholder="Usuario">
+              <label for="txtUserName">Usuario</label>
+              <div *ngIf="frmUsuario.controls.username.invalid 
+                 && (frmUsuario.controls.username.dirty || frmUsuario.controls.username.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmUsuario.controls.username.hasError('required')">El campo usuario es obligatorio.</span>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-4 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input id="txtEmail" type="text" class="form-control" formControlName="email" placeholder="Email">
+              <label for="txtEmail">Email</label>
+              <div *ngIf="frmUsuario.controls.email.invalid 
+                         && (frmUsuario.controls.email.dirty || frmUsuario.controls.email.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmUsuario.controls.email.hasError('required')">El campo email es obligatorio.</span>
+                <span *ngIf="frmUsuario.controls.email.hasError('invalidEmailAddress')">Formato de email no valido.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-xs-12 form-group">
+            <div class="form-label-group">
+              <select multiple formControlName="roles" id="roles" class="form-control" [compareWith]="compareFn">
+                <option *ngFor="let rol of roles" [ngValue]="rol">{{rol.valor}}</option>
+              </select>
+              <label for="roles">Rol</label>
+              <div *ngIf="frmUsuario.controls.roles.invalid 
+                         && (frmUsuario.controls.roles.dirty || frmUsuario.controls.roles.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmUsuario.controls.roles.hasError('required')">El campo rol es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group text-right">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="admin">
+              <label class="btn btn-outline-dark" ngbButtonLabel >
+                Administrador
+              </label>
+              <label class="btn-primary" ngbButtonLabel>
+                <input type="radio" [value]="true" ngbButton> Si
+              </label>
+              <label class="btn-primary" ngbButtonLabel>
+                <input type="radio"  [value]="false" ngbButton> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 text-right">
+            <button class="btn btn-primary" [disabled]="!frmUsuario.valid" type="button" (click)="onSubmit()">Guardar
+            </button>
+            <button class="btn btn-outline-dark" type="button" (click)="this.isNewUsuario = !this.isNewUsuario">Cancelar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between" *ngIf="!showAlert">
+        <div class="row">
+          <div class="col-md-2 col-xs-2">
+
+          </div>
+          <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+            <label class="label-cabecera">Usuario</label>
+          </div>
+          <div class="col-md-5 col-xs-5 text-center form-group no-margin">
+            <label class="label-cabecera">Email</label>
+          </div>
+          <div class="col-md-2 col-xs-2 text-center form-group no-margin">
+            <label class="label-cabecera">Administrador</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let user of usuarios">
+        <div class="row">
+          <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary" [disabled]="isNewUsuario" ngbTooltip="Editar" placement="top" (click)="editUsuario(user)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(user)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+            <label>{{user.username}}</label>
+          </div>
+          <div class="col-md-5 col-xs-5 text-center form-group no-margin">
+            <label>{{user.email}}</label>
+          </div>
+          <div class="col-md-2 col-xs-2 text-center form-group no-margin">
+            <i class="fa  fa-{{user.admin ? 'check' : 'times'}}"></i>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
+<ng-template [ngIf]="showAlert">
+  <app-alert-component [alert]="alert"></app-alert-component>
+</ng-template>

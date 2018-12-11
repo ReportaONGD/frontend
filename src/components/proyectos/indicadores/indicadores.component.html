@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Indicadores
+      <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" style="float: right;" (click)="addNewIndicador()"
+        *ngIf="!isEjecucion">
+        <i class="fa fa-plus"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-body">
+    <p *ngIf="!isEjecucion">
+      <ngb-alert *ngIf="showAlert()" type='warning'>
+        No existe ningún Indicador, pulse en el botón + para agregar uno nuevo.</ngb-alert>
+    </p>
+    <ul class="list-group" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="p-0 col-md-2 col-xs-3 text-center"></div>
+          <div class="p-0 col-md-2 col-xs-3 text-center form-group no-margin"><label class="label-cabecera">Código</label>
+          </div>
+          <div class="p-0 col-md-8 col-xs-6 text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-action justify-content-between" *ngFor="let indicador of indicadores">
+        <div class="row">
+          <div class="p-0 col-md-3 col-xs-3 text-center btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary" ngbTooltip="Editar" placement="top" (click)="editIndicador(indicador)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" *ngIf="!isEjecucion" (click)="openModalRemove(indicador)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+            <button type="button" class="btn btn-success" ngbTooltip="Medidas Intermedias" placement="top" *ngIf="isEjecucion" (click)="addNewMedida(indicador)">
+              <i class="fa fa-thermometer-half"></i>
+            </button>
+            <button type="button" class="btn btn-success" ngbTooltip="Comentarios" placement="top" *ngIf="isEjecucion" (click)="addNewComentario(indicador)">
+              <i class="fa fa-comments"></i>
+            </button>
+          </div>
+          <div class="p-0 col-md-2 col-xs-3 text-center form-group no-margin"><label>{{indicador.codigo}}</label></div>
+          <div class="p-0 col-md-7 col-xs-6 text-center form-group no-margin"><label>{{indicador.descripcion}}</label></div>
+
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

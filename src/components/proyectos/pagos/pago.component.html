@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">
+      {{title}}
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" ngbPopover="Agreguelos pagos asociados al gasto."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button type="button" class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" ngbTooltip="Añadir" (click)="addPago()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body" *ngIf="pagos && pagos.length > 0">
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col-md-2 text-center"></div>
+          <div class="col-md-3 text-center">Cuenta Origen</div>
+          <div class="col-md-3  text-center">Cuenta Destino</div>
+          <div class="col-md-2  text-center">TipoMovimiento</div>
+          <div class="col-md-2  text-center">Fecha</div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let pago of pagos let i = index">
+        <div class="row">
+          <div class="col-md-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary btn-sm" (click)="editPago(pago)" placement="top" ngbTooltip="Editar">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" placement="top" ngbTooltip="Eliminar" (click)="onDelete(pago)">
+              <i class="fa  fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col-md-3 text-center">{{pago.cuenta_origen ? pago.cuenta_origen.ncuenta : ''}}</div>
+          <div class="col-md-3 text-center">{{pago.cuenta_destino ? pago.cuenta_destino.ncuenta : ''}}</div>
+          <div class="col-md-2 text-center">{{pago.tipo_movimiento ? pago.tipo_movimiento.valor : ''}}</div>
+          <div class="col-md-2 text-center">{{pago._fecha ? ds.format(pago._fecha) : ''}}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="padding: 10px 35px;" *ngIf="showAlert() && !isEjecucion">
+      <ngb-alert type='info'>No existe ningún pago asociado, pulse en el botón + para agregar uno nuevo.</ngb-alert>
+    </div>
+  </div>
+</div>

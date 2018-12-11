@@ -1,0 +1,67 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Informes
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" ngbPopover="Listado de informes por periodo asociados al proyecto"
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" [disabled]="(showAlertPeriodo | async)"type="button" ngbTooltip="Añadir" style="float: right"
+          (click)="addInforme()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col-md-2 col-xs-2 text-center" *ngIf="!isEjecucion">
+          </div>
+          <div class="col text-center">Nombre</div>
+          <div class="col text-center">Periodo</div>
+          <div class="col text-center">Tipo</div>
+          <div class="col-md-2 col-xs-2"></div>
+        </div>
+
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let informe of informes let i = index">
+        <div class="row">
+          <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary btn-sm" (click)="editInforme(informe)" placement="top" ngbTooltip="Editar">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" placement="top" ngbTooltip="Eliminar" (click)="onDelete(informe)">
+              <i class="fa  fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col text-center">{{informe.nombre}}</div>
+          <div class="col text-center">{{informe.periodo.nombre}}: {{informe.periodo.fecha_inicio | date:'dd/MM/yyyy' }}-{{informe.periodo.fecha_fin
+            | date:'dd/MM/yyyy'}}</div>
+          <div class="col form-group no-margin text-center">
+            {{informe.final ? "final" : "Intermedio " + (i+1)}}
+            <!-- <i class="fa fa-times" *ngIf="!informe.final"></i>
+            <i class="fa fa-check" *ngIf="informe.final"></i> -->
+          </div>
+          <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group">
+            <button class="btn btn-success btn-sm" placement="top" ngbTooltip="Ver Datos del Proyecto Asociado" (click)="goTo(informe)">
+              <i class="fa fa-book"></i>
+            </button>
+            <button class="btn btn-success btn-sm" placement="top" ngbTooltip="Exportar a excel" (click)="exportToExcel(informe)">
+              <i class="fa fa-file-excel-o"></i>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <p *ngIf="!isEjecucion">
+      <ngb-alert *ngIf="showAlertPeriodo | async" type='warning'>El proyecto no tiene ningún periodo, pulse <a style="color: #007bff;cursor: pointer;" (click)="goTo()" >aquí</a> y vaya a periodos al final de la página para agregar uno nuevo.</ngb-alert>
+      <ngb-alert *ngIf="showAlert() && !(showAlertPeriodo | async)" type='info'>No existe ningún informe , pulse en el botón + para agregar una nuevo.</ngb-alert>
+    </p>
+  </div>
+  <div class="my-container" [hidden]="!isLoadingI">
+    <ngx-loading show=true; [config]="config"></ngx-loading>
+  </div>
+</div>

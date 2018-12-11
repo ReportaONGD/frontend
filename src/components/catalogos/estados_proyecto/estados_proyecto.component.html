@@ -1,0 +1,53 @@
+<table class="table table-sm table-bordered table-hover table-striped">
+  <thead>
+    <tr>
+      <th style="min-width: 5%;text-align: center">Acciones</th>
+      <th style="width: 40%;text-align: center">Nombre</th>
+      <th style="width: 45%;text-align: center">Estado Siguiente</th>
+      <th style="width: 10%;text-align: center">Final</th>
+    </tr>
+    <tr>
+      <th class="btn-add-row">
+        <button class="btn btn-success btn-sm mb-auto btn-row" ngbTooltip="Añadir" (click)="onNew()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.nombre" placeholder="filtrar: Valor"
+          class="filter-control">
+      </th>
+      <th>
+        <!-- <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.estado_anterior" placeholder="filtrar: Estado Siguiente"
+          class="filter-control"> -->
+      </th>
+      <th>
+        <select class="form-control" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.final" class="filter-control" [compareWith]="compare">
+          <option value="">Todos</option>
+          <option value="false">No Final</option>
+          <option value="true">Final</option>
+        </select>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let estadoProyecto of estadosProyecto | embeded_object_filter_by_nombre:filter let i = index">
+      <td style="width: 5%" scope="row" style="text-align: center;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="onEdit(estadoProyecto)" placement="top" ngbTooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" placement="top" ngbTooltip="Eliminar" (click)="onDelete(estadoProyecto)">
+          <i class="fa  fa-trash-o"></i>
+        </button>
+      </td>
+      <td style="width: 40%" scope="row">{{estadoProyecto.nombre}}</td>
+      <td style="width: 45%" scope="row">{{(estadoProyecto.estado_anterior ? estadoProyecto.estado_anterior.nombre : '')}}</td>
+      <td style="width: 10%" scope="row">
+        <i class="fa  fa-{{estadoProyecto.final ? 'check' : 'times'}}"></i>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="showAlert()">
+  <ngb-alert type='info'>No existe ningún Estado Proyecto, pulse en el botón + para agregar una nuevo.</ngb-alert>
+</p>

@@ -1,0 +1,71 @@
+<ul class="list-group">
+  <li class="list-group-item justify-content-between">
+    <div class="row">
+      <div class="col-md-1 col-xs-1 text-center">
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion"  type="button" ngbTooltip="Añadir" (click)="addNewAportacion()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+      <div class="col-md-8 col-xs-8 text-center form-group no-margin">
+        <label class="label-cabecera">Cofinanciador</label>
+      </div>
+      <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+        <label class="label-cabecera">Cuantia</label>
+      </div>
+    </div>
+
+  </li>
+  <li class="list-group-item justify-content-between" *ngIf="isNewAportacion">
+    <form [formGroup]="frmApor">
+      <div class="row">
+        <div class="col-md-2 col-xs-2  btn-group-sm" role="group">
+          <button type="button" class="btn btn-success" ngbTooltip="Guardar" placement="top" [disabled]="!frmApor.valid" (click)="onSubmitAportacion()">
+            <i class="fa fa-check"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" ngbTooltip="Cancelar" placement="top" (click)="cancel()">
+            <i class="fa fa-remove"></i>
+          </button>
+        </div>
+        <div class="col-md-7 col-xs-7 form-group no-margin">
+          <select formControlName="cofinanciador" [compareWith]="compareFn" class="form-control">
+            <option [ngValue]="null"  disabled>Cofinanciador</option>
+            <option *ngFor="let cofinanciador of cofinanciadores" [ngValue]="cofinanciador">{{cofinanciador.valor}}</option>
+          </select>
+          <div *ngIf="frmApor.get('cofinanciador').invalid 
+              && (frmApor.get('cofinanciador').dirty || frmApor.get('cofinanciador').touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmApor.get('cofinanciador').hasError('required')">El campo cofinanciador es obligatorio.</span>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-3 form-group no-margin">
+          <input type="number" formControlName="cuantia" class="form-control" placeholder="Cuantia">
+          <div *ngIf="frmApor.controls.cuantia.invalid 
+              && (frmApor.controls.cuantia.dirty || frmApor.controls.cuantia.touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmApor.controls.cuantia.hasError('required')">El cuantia entidad es obligatorio.</span>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </li>
+  <li class="list-group-item justify-content-between" *ngFor="let aportacion of (aportaciones | async)">
+    <div class="row">
+      <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+        <button type="button" class="btn btn-primary" [disabled]="isNewAportacion" ngbTooltip="Editar" placement="top" (click)="editAportacion(aportacion)">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(aportacion)">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+      <div class="col-md-4 col-xs-4 text-center form-group no-margin">
+        {{aportacion.cofinanciador.valor}}
+      </div>
+      <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+        {{aportacion.cuantia }}
+      </div>
+      <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+        <i class="fa fa-check" *ngIf="aportacion.privada"></i>
+      </div>
+    </div>
+  </li>
+</ul>

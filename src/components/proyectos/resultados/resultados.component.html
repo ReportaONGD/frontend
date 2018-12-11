@@ -1,0 +1,130 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Resultados para los Objetivos Específicos
+      <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="float:right" ngbPopover="Selecciones un objetivo especifico para agregar un resultado."
+        popoverTitle="Información">
+        <i class="fa fa-info"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-block form-project">
+    <app-objetivos-especificos-list-component [ids]="ids" (selectObjetivo)="selectObjetivo($event)" (addResultado)="addResultado($event)"></app-objetivos-especificos-list-component>
+  </div>
+  <div class="card-block form-project" style="padding-top: 0" *ngIf="isObjetivoSelected">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">{{titleResultado}}
+          <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+          <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" style="float: right;margin-top: .2rem" (click)="addNewResultado()"
+            [disabled]="!isAdd" *ngIf="!isEjecucion">
+            <i class="fa fa-plus"></i>
+          </button>
+        </h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item" style="border:0px; padding-left: 0; padding-right: 0" *ngIf="!isAdd">
+            <form [formGroup]="frmResultado">
+              <!--CODIGO DESCRIPCION-->
+              <div class="row">
+                <div class=" col-md-3 col-xs-12 form-group">
+                  <input type="text" placeholder="Código" formControlName="codigo" class="form-control">
+                  <div *ngIf="frmResultado.controls.codigo.invalid 
+                          && (frmResultado.controls.codigo.dirty || frmResultado.controls.codigo.touched)" class="alert alert-danger alert-form">
+                    <span *ngIf="frmResultado.controls.codigo.hasError('required')">El campo código es obligatorio.</span>
+                  </div>
+                </div>
+                <div class=" col-md-6 col-xs-6 form-group">
+                  <input type="text" placeholder="Descripción" formControlName="descripcion" class="form-control">
+                  <div *ngIf="frmResultado.controls.descripcion.invalid 
+                          && (frmResultado.controls.descripcion.dirty || frmResultado.controls.descripcion.touched)" class="alert alert-danger alert-form">
+                    <span *ngIf="frmResultado.controls.descripcion.hasError('required')">El campo descripción es obligatorio.</span>
+                  </div>
+                </div>
+                <div class=" col-md-3 col-xs-3 text-right">
+                  <button class="btn btn-primary" [disabled]="!frmResultado.valid" type="button" (click)="onSubmit()">Guardar
+                  </button>
+                  <button class="btn btn-outline-dark" type="button" (click)="cancelSaveResultado()">Cancelar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </li>
+        </ul>
+        <div class="card-block card-block-margin" *ngIf="isObjetivoSelected && objetivo_especifico !== null && resultados && resultados.length > 0">
+          <ul class="list-group">
+
+            <li class="list-group-item justify-content-between">
+              <div class="row">
+                <div class="p-0 col-md-2 text-center">
+                </div>
+                <div class="p-0 col-md-2 col-xs-3 text-center form-group no-margin">
+                  <label class="label-cabecera">Código</label>
+                </div>
+                <div class="p-0 col-md-6 col-xs-3 text-center form-group no-margin">
+                  <label class="label-cabecera">Descripción</label>
+                </div>
+                <div class="p-0 col-md-2 col-xs-3 text-center form-group no-margin">
+                  <label class="label-cabecera">Acciones</label>
+                </div>
+              </div>
+
+            </li>
+            <li *ngFor="let res of resultados" class="list-group-item justify-content-between" [class.fila-activa]="isSelected(res)">
+              <div class="row" (click)="selectResultado(res)">
+                <div class="p-0 col-md-2 col-xs-2 text-center btn-group-sm" role="group">
+                  <button type="button" class="btn btn-primary" ngbTooltip="Editar" placement="top" (click)="editResultado(res)" *ngIf="!isEjecucion">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(res)" *ngIf="!isEjecucion">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                  <button type="button" class="btn btn-success btn-sm" ngbTooltip="Comentarios" placement="top" (click)="addNewComentario(res)"
+                    *ngIf="isEjecucion">
+                    <i class="fa fa-comments"></i>
+                  </button>
+                </div>
+
+                <div class="p-0 col-md-2 col-xs-3 text-center form-group no-margin">
+                  {{res.codigo}}
+                </div>
+                <div class="p-0 col-md-6 col-xs-5 text-center form-group no-margin">
+                  {{res.descripcion}}
+                </div>
+                <div class="p-0 col-md-2 col-xs-2 btn-group-sm text-center" role="group">
+                  <button type="button" class="btn btn-success btn-sm" ngbTooltip="Seleccionar Resultado" placement="top" (click)="selectResultado(res)">
+                    <i class="fa fa-check-square-o"></i>
+                  </button>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+
+        </div>
+        <div class="row">
+          <!-- <div class=" col-md-6 col-xs-12 card-block card-block-margin" *ngIf="isResultadoSelected">
+            <app-fuente-verificacion-component [ids]="ids" [service]="resultadoFuenteVerificacionService"></app-fuente-verificacion-component>
+          </div> -->
+          <div class=" col-md-12 col-xs-12 card-block card-block-margin" *ngIf="isResultadoSelected">
+            <app-actividad-component [ids]="ids" [actividades]="resultado.actividades"></app-actividad-component>
+          </div>
+          <div class=" col-md-6 col-xs-12 card-block card-block-margin" *ngIf="isResultadoSelected">
+            <app-hipotesis-component [ids]="ids" [hipotesisList]="resultado.hipotesis" [service]="ogHipotesisService"></app-hipotesis-component>
+          </div>
+          <div class=" col-md-6 col-xs-12 card-block card-block-margin" *ngIf="isResultadoSelected">
+            <app-indicadores-component [isModal]="true" [ids]="ids" [indicadores]="resultado.indicadores" [service]="ogResIndicadorService"
+              [documentos_service]="documentoService" [comentarios_service]="resultadoIndComentarioService" [medidas_service]="medidasService"
+              [fuente_verificacion_service]="resultadoFuenteVerificacionService"></app-indicadores-component>
+          </div>
+
+        </div>
+          <p>
+            <ngb-alert *ngIf="showAlert" type='info'>No existe ningún resultado , pulse en
+              el botón + para agregar una nuevo.</ngb-alert>
+          </p>
+      </div>
+    </div>
+  </div>
+</div>

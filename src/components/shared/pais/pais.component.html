@@ -1,0 +1,13 @@
+<div class="form-label-group" [formGroup]="item">
+  <select *ngIf="isMultiple" multiple formControlName="pais" id="ddlPais" [compareWith]="compareFn" class="form-control">
+    <option *ngFor="let pais of paises" [ngValue]="pais">{{pais.valor}}</option>
+  </select>
+  <select *ngIf="!isMultiple" formControlName="pais" id="ddlPais" [compareWith]="compareFn" class="form-control">
+    <!-- <option [ngValue]="null" [selected]="true" disabled>País</option> -->
+    <option *ngFor="let pais of paises" [ngValue]="pais">{{pais.valor}}</option>
+  </select>
+  <label for="ddlPais">País</label>
+  <div *ngIf="isRequired && (item.get('pais').invalid && (item.get('pais').dirty || item.get('pais').touched))" class="alert alert-danger alert-form">
+    <span>El campo país es obligatorio.</span>
+  </div>
+</div>

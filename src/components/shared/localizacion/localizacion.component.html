@@ -1,0 +1,11 @@
+<div class="form-label-group" [formGroup]="item">
+  <select id="ddlLocalizacion" formControlName="localizacion" [required]="isRequired" [compareWith]="compareFn" class="form-control">
+    <option [ngValue]="null" [selected]="true" disabled>Localización</option>
+    <option *ngFor="let localizacion of localizaciones" [ngValue]="localizacion">{{localizacion.valor}}</option>
+  </select>
+  <label for="ddlLocalizacion">Localización</label>
+  <div *ngIf="isRequired && (item.get('localizacion').invalid && (item.get('localizacion').dirty || item.get('localizacion').touched))"
+    class="alert alert-danger alert-form">
+    <span>El campo Localización es obligatorio.</span>
+  </div>
+</div>

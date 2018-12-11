@@ -1,0 +1,67 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Hipótesis
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+      <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" type="button" ngbTooltip="Añadir" style="float: right"
+        [disabled]="showForm" (click)="addNewHipotesis()">
+        <i class="fa fa-plus"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="card-body">
+    <p *ngIf="!isEjecucion">
+      <ngb-alert *ngIf="showAlert()" type='warning'>
+        No existe ninguna Hipótesis, pulse en el botón + para agregar una nueva.</ngb-alert>
+    </p> 
+    <ul class="list-group">
+      <li class="list-group-item justify-content-between" *ngIf="!showAlert()">
+        <div class="row">
+          <div class="p-0 col-md-3 col-xs-3 text-center form-group no-margin" *ngIf="!isEjecucion"></div>
+          <div class="p-0 col-md-9 col-xs-9 text-center form-group no-margin">
+            <label class="label-cabecera">Descripción</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngIf="showForm" style="padding-top: 2rem;">
+        <form [formGroup]="frmHipotesis" (submit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-4 col-xs-4 btn-group-sm" role="group">
+              <button type="submit" class="btn btn-success" ngbTooltip="Guardar" placement="top" [disabled]="!frmHipotesis.valid">
+                <i class="fa fa-check"></i>
+              </button>
+              <button type="button" class="btn btn-secondary" ngbTooltip="Cancelar" placement="top" (click)="cancelHipotesis()">
+                <i class="fa fa-remove"></i>
+              </button>
+            </div>
+            <div class="col-md-8 col-xs-8 form-group no-margin">
+              <div class="form-label-group">
+                <textarea class="form-control" id="txtDesc" formControlName="descripcion" placeholder="Descripción"></textarea>
+                <label for="txtDesc">Descripción</label>
+                <div *ngIf="frmHipotesis.get('descripcion').invalid 
+                        && (frmHipotesis.get('descripcion').dirty || frmHipotesis.get('descripcion').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmHipotesis.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let hipotesis of hipotesisList let i = index" >
+        <div class="row">
+          <div class="p-0 col-md-3 col-xs-3 btn-group-sm text-center" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary" [disabled]="showForm" ngbTooltip="Editar" placement="top" (click)="editHipotesis(hipotesis)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(hipotesis)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="p-0 col-md-9 col-xs-9 form-group no-margin text-center">
+            {{hipotesis.descripcion}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

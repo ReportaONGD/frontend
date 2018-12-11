@@ -1,0 +1,50 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmEstadoProyecto" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input id="txtNombre" type="text" class="form-control" formControlName="nombre" placeholder="Nombre" appAutofocus>
+              <label for="txtNombre">Nombre</label>
+              <div *ngIf="frmEstadoProyecto.get('nombre').invalid && (frmEstadoProyecto.get('nombre').dirty || frmEstadoProyecto.get('nombre').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmEstadoProyecto.get('nombre').hasError('required')">El campo Nombre es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-xs-8 form-group">
+            <div class="form-label-group">
+              <select id="ddlEstado" class="form-control" formControlName="estado_anterior" [compareWith]="compare">
+                <!-- <select class="form-control" formControlName="estado_anterior"> -->
+                <option *ngIf="isNew" [value]="undefined" disabled [selected]="true">Estado Anterior</option>
+                <option value="null">Estado Inicial</option>
+                <option *ngFor="let estadoProyecto of estadosProyecto | app_exclusion_filter:frmEstadoProyecto.get('id').value" [ngValue]="estadoProyecto">{{estadoProyecto.nombre}}</option>
+              </select>
+              <label for="ddlEstado">Estado Anterior</label>
+            </div>
+          </div>
+          <div class="col-md-4 col-xs-4 form-group">
+            <div class="btn-group btn-group-toggle">
+              <label ngbButtonLabel [ngClass]="{
+                'btn-success': frmEstadoProyecto.get('final').value,
+                'btn-danger': !frmEstadoProyecto.get('final').value
+                }">
+                <input type="checkbox" ngbButton formControlName="final"> Final
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmEstadoProyecto.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

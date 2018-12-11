@@ -1,0 +1,88 @@
+<table class="table table-sm table-bordered table-hover table-striped">
+  <thead>
+    <tr>
+      <th style="width:5%;max-width: 5%;text-align: center">Acciones</th>
+      <th style="width: 15%;text-align: center">Código</th>
+      <th style="width: 15%;text-align: center">Nombre</th>
+      <th style="width: 15%;text-align: center">País</th>
+      <th style="width: 15%;text-align: center">Estado</th>
+      <!-- <th style="width:20%;max-width: 20%;text-align: center">Información</th> -->
+    </tr>
+    <tr>
+      <th class="btn-add-row">
+        <button class="btn btn-success btn-sm mb-auto btn-row" [disabled]="(showAlertFinanciador | async) || (showAlertSocio | async)" ngbTooltip="Añadir" (click)="onCreate()">
+          <i class="fa fa-plus" ></i>
+        </button>
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.codigo" placeholder="filtrar: Código"
+          class="filter-control">
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.nombre" placeholder="filtrar: Nombre"
+          class="filter-control">
+      </th>
+      <th>
+        <!-- <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.pais" placeholder="filtrar: País"
+          class="filter-control"> -->
+      </th>
+     
+      <!-- <th></th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let proyecto of proyectos | app_filter:filter let i = index">
+      <td style="max-width: 5%" scope="row" style="text-align: center;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="onEdit(proyecto)" placement="top" ngbTooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="openModalRemove(proyecto)" placement="top" ngbTooltip="Eliminar">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </td>
+      <td scope="row">
+        <span>{{proyecto.codigo}}</span>
+      </td>
+      <td scope="row">
+        <span>{{proyecto.nombre}}</span>
+      </td>
+      <td scope="row">
+        <ul id="paisList" class="list-group ulPais">
+          <li class="list-group-item" style=" float: left;
+          background-color: transparent;
+          border: none;
+          padding: 0;"
+          *ngFor="let pais of proyecto.pais">
+            <span>{{pais.valor}}</span>
+          </li>
+        </ul>
+      </td>
+      <td scope="row">
+          <span>{{proyecto.estado_proyecto?.nombre}}</span>
+        </td>
+      <!-- <td>
+          <div class="col btn-group-sm text-right" role="group">
+              <button type="button" class="btn btn-success btn-sm" (click)="goToCronograma(proyecto)" placement="top" ngbTooltip="Ver Cronograma">
+                  <i class="fa fa-clock-o"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" (click)="goToPresupuestoInicial(proyecto)" placement="top"  ngbTooltip="Presupuesto/Partida">
+                  <i class="fa fa-eur"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" (click)="goToGastos(proyecto)" placement="top" ngbTooltip="Gastos">
+                  <i class="fa fa-balance-scale"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" (click)="goToDocumentos(proyecto)" ngbTooltip="Documentos" placement="top">
+                  <i class="fa fa-file-archive-o"></i>
+                </button>
+          </div>
+        
+      </td> -->
+    </tr>
+  </tbody>
+</table>
+<p>
+  <ngb-alert *ngIf="showAlertSocio | async" type='warning'>No existe ningún Socio Local, pulse <a routerLink="/implementador">aquí </a> para agregar uno nuevo.</ngb-alert>
+  <!-- <ngb-alert *ngIf="paises.length === 0" type='warning'>No existe ningún pa, pulse <a routerLink="/implementador">aquí </a> para agregar una nuevo.</ngb-alert> -->
+  <ngb-alert *ngIf="showAlertFinanciador | async" type='warning'>No existe ningún Financiador, pulse <a routerLink="/financiador">aquí </a> para agregar uno nuevo.</ngb-alert>
+  <ngb-alert *ngIf="showAlert() && (!(showAlertFinanciador | async) && !(showAlertSocio | async) )" type='info'>No existe ningún Proyecto, pulse en el botón + para agregar una nuevo.</ngb-alert>
+</p>

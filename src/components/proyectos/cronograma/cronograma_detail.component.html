@@ -1,0 +1,123 @@
+<div  class="modal-body">
+  <div  *ngIf="this.actividad | async" class="card">
+    <div class="card-header">
+      <h5 class="form-signin-heading mb-0" >{{title}}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmActividad" (submit)="onSubmit()">
+        <!-- <div class="row">
+          <div class="col-md-4 col-xs-12 form-group"><label><strong>Objetivo:</strong> {{Objetivo}}</label></div>
+          <div class="col-md-4 col-xs-12 form-group"><label><strong>Resultado:</strong> {{Resultado}}</label></div>
+          <div class="col-md-4 col-xs-12 form-group"><label><strong>Actividad:</strong> {{Actividad}}</label></div>
+        </div> -->
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group"  formGroupName="planificacion_actividad">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha Inicio Planificación" type="text"
+                     ngbDatepicker 
+                     formControlName="fecha_inicio"
+                     #fechaInicioPlanificacion="ngbDatepicker" [outsideDays]="hidden"
+                     [displayMonths]="2" [navigation]="select"
+                     [showWeekNumbers]="false"
+                     [maxDate]="maxDate"
+                     [minDate]="minDate"
+                     [disabled]="isEjecucion"
+                     >
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaInicioPlanificacion.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmActividad.get('planificacion_actividad.fecha_inicio').invalid
+                 && (frmActividad.get('planificacion_actividad.fecha_inicio').dirty || frmActividad.get('planificacion_actividad.fecha_inicio').touched)"
+                 class="alert alert-danger alert-form">
+              <span *ngIf="frmActividad.get('planificacion_actividad.fecha_inicio').hasError('required')">La fecha de inicio de la planificación es obligatoria.</span>
+              <span 
+                  *ngIf="frmActividad.get('planificacion_actividad.fecha_inicio').hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group" formGroupName="planificacion_actividad">
+            <div class="input-group" >
+              <input class="form-control" placeholder="Fecha Fin Planificación" type="text"
+                     ngbDatepicker 
+                     formControlName="fecha_fin"
+                     #fechaFinPlanificacion="ngbDatepicker"
+                     [displayMonths]="2" [navigation]="select"
+                     [showWeekNumbers]="false"
+                     [maxDate]="maxDate"
+                     [minDate]="minDate"
+                     [disabled]="isEjecucion"
+                     >
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaFinPlanificacion.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmActividad.get('planificacion_actividad.fecha_fin').invalid
+                 && (frmActividad.get('planificacion_actividad.fecha_fin').dirty || frmActividad.get('planificacion_actividad.fecha_fin').touched)"
+                 class="alert alert-danger alert-form">
+              <span *ngIf="frmActividad.get('planificacion_actividad.fecha_fin').hasError('required')">La fecha de fin de la planificación es obligatoria.</span>
+              <span *ngIf="frmActividad.get('planificacion_actividad.fecha_fin').hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group" formGroupName="ejecucion_actividad">
+            <div class="input-group">
+              <input class="form-control" placeholder="Fecha Inicio Real" type="text"
+                     ngbDatepicker 
+                     formControlName="fecha_inicio"
+                     #fechaInicioReal="ngbDatepicker"
+                     [displayMonths]="2" [navigation]="select"
+                     [showWeekNumbers]="false"
+                     [maxDate]="maxDate"
+                     [minDate]="minDate"
+                     required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaInicioReal.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmActividad.get('ejecucion_actividad.fecha_inicio').invalid
+                  && (frmActividad.get('ejecucion_actividad.fecha_inicio').dirty || frmActividad.get('ejecucion_actividad.fecha_inicio').touched)"
+                 class="alert alert-danger alert-form">
+              <span *ngIf="frmActividad.get('ejecucion_actividad.fecha_inicio').hasError('required')">La fecha de inicio real es obligatoria.</span>
+              <span *ngIf="frmActividad.get('ejecucion_actividad.fecha_inicio').hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group" formGroupName="ejecucion_actividad">
+            <div class="input-group" >
+              <input class="form-control" placeholder="Fecha Fin Real" type="text"
+                     ngbDatepicker
+                     formControlName="fecha_fin"
+                     #fechaFinReal="ngbDatepicker"
+                     [displayMonths]="2" [navigation]="select"
+                     [showWeekNumbers]="false"
+                     [maxDate]="maxDate"
+                     [minDate]="minDate"
+                     >
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="fechaFinReal.toggle()" type="button">
+                  <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="frmActividad.get('ejecucion_actividad.fecha_fin').invalid
+                  && (frmActividad.get('ejecucion_actividad.fecha_fin').dirty || frmActividad.get('ejecucion_actividad.fecha_fin').touched)"
+                 class="alert alert-danger alert-form">
+              <span *ngIf="frmActividad.get('ejecucion_actividad.fecha_fin').hasError('required')">La fecha de fin real es obligatoria.</span>
+              <span *ngIf="frmActividad.get('ejecucion_actividad.fecha_fin').hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" 
+                  [disabled]="!frmActividad.valid">Guardar
+          </button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

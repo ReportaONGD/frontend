@@ -1,0 +1,234 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">{{title}}
+      <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+    </h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="frmInforme" (submit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtNombre">Nombre</label>
+          <input id="txtNombre" type="text" class="form-control" formControlName="nombre" placeholder="Nombre" appAutofocus>
+          <div *ngIf="frmInforme.get('nombre').invalid
+                        && (frmInforme.get('nombre').dirty || frmInforme.get('nombre').touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmInforme.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group text-left pt-4">
+          <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="final">
+            <label ngbButtonLabel class="btn btn-outline-dark">
+              Final
+            </label>
+            <label ngbButtonLabel class="btn-primary">
+              <input ngbButton type="radio" [value]="true"> Si
+            </label>
+            <label ngbButtonLabel class="btn-primary">
+              <input ngbButton type="radio" [value]="false"> No
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtAutor">Autor</label>
+          <input id="txtAutor" type="text" class="form-control" formControlName="autor" placeholder="Autor">
+          <div *ngIf="frmInforme.get('autor').invalid
+                          && (frmInforme.get('autor').dirty || frmInforme.get('autor').touched)" class="alert alert-danger alert-form">
+            <span *ngIf="frmInforme.get('autor').hasError('required')">El campo nombre es obligatorio.</span>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="ddlPeriodos">Periodos</label>
+          <select id="ddlPeriodos" formControlName="periodo" [compareWith]="compareFn" class="form-control">
+            <!-- <option [ngValue]="null"  disabled>Etapa</option> -->
+            <option *ngFor="let periodo of periodos" [ngValue]="periodo">{{periodo.nombre}}: {{ds.format(periodo._fecha_inicio)}}-{{ds.format(periodo._fecha_fin)}}</option>
+          </select>
+          <div *ngIf="frmInforme.controls.periodo.invalid && (frmInforme.controls.periodo.dirty || frmInforme.controls.periodo.touched)"
+            class="alert alert-danger alert-form">
+            <span *ngIf="frmInforme.controls.periodo.hasError('required')">El campo periodo es obligatorio.</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h4 class="col-md-12 col-xs-12 text-info pb-3">Incidencias no previstas</h4>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtModSust">Modificaciones Sustanciales</label>
+          <ul>
+            <li class="py-1" *ngFor="let item of frmInforme.controls.modificaciones_sustanciales.value; let i = index">
+              <div class="row">
+                <div class="col-md-10 col-xs-10">{{item}}</div>
+                <div class="col-md-2 col-xs-2">
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa fa-trash" (click)="removeModificacionSus(i)"></i>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <input class="form-control" id="txtModSust" [(ngModel)]="mod_sus" [ngModelOptions]="{standalone: true}" placeholder="Modificaciones Sustanciales"
+              type="text">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="button" (click)="addModificacionesSus()" [disabled]="!mod_sus || mod_sus.length === 0">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtModAcc">Modificaciones Accidentales</label>
+          <ul>
+            <li class="py-1" *ngFor="let item of frmInforme.controls.modificaciones_accidentales.value; let i = index">
+              <div class="row">
+                <div class="col-md-10 col-xs-10">{{item}}</div>
+                <div class="col-md-2 col-xs-2">
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa fa-trash" (click)="removeModificacionAcc(i)"></i>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <input class="form-control" id="txtModAcc" [(ngModel)]="mod_acc" [ngModelOptions]="{standalone: true}" placeholder="Modificaciones Accidentales"
+              type="text">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="button" (click)="addModificacionesAcc()" [disabled]="!mod_acc || mod_acc.length === 0">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtActPre">Actividades previstas y no ejecutadas</label>
+          <ul>
+            <li class="py-1" *ngFor="let item of frmInforme.controls.actividades_previstas.value; let i = index">
+              <div class="row">
+                <div class="col-md-10 col-xs-10">{{item}}</div>
+                <div class="col-md-2 col-xs-2">
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa fa-trash" (click)="removeActividadesPrev(i)"></i>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <input class="form-control" id="txtActPre" [(ngModel)]="act_pre" [ngModelOptions]="{standalone: true}" placeholder="Actividades previstas y no ejecutadas"
+              type="text">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="button" (click)="addActividadesPrev()" [disabled]="!act_pre || act_pre.length === 0">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtNueAct">Nuevas actividades no previstas inicialmente</label>
+          <ul>
+            <li class="py-1" *ngFor="let item of frmInforme.controls.nuevas_actividades_npi.value; let i = index">
+              <div class="row">
+                <div class="col-md-10 col-xs-10">{{item}}</div>
+                <div class="col-md-2 col-xs-2">
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa fa-trash" (click)="removeNueActividades(i)"></i>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <input class="form-control" id="txtNueAct" [(ngModel)]="nue_act" [ngModelOptions]="{standalone: true}" placeholder="Nuevas actividades no previstas inicialmente"
+              type="text">
+            <div class="input-group-append">
+              <button class="btn btn-success" type="button" (click)="addNueActividades()" [disabled]="!nue_act || nue_act.length === 0">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h4 class="col-md-12 col-xs-12 text-info pb-3">Valoración general</h4>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtvaloracion_general">Valoración general sobre el grado de participación social e institucional de los colectivos afectados y sobre el
+            mecanismo de ejecución del proyecto (apropiación y participación)</label>
+          <textarea id="txtvaloracion_general" type="text" class="form-control" formControlName="valoracion_general" placeholder="Valoración general sobre el grado de participación social e institucional de los colectivos afectados y sobre el mecanismo de ejecución del proyecto (apropiación y participación)"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtgrado_de_alineamiento">Grado de alineamiento con prioridades nacionales y de uso de procedimientos nacionales</label>
+          <textarea id="txtgrado_de_alineamiento" type="text" class="form-control" formControlName="grado_de_alineamiento" placeholder="Grado de alineamiento con prioridades nacionales y de uso de procedimientos nacionales"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtpuntos_fuertes_debiles">Señalar puntos fuertes y débiles del proyecto</label>
+          <textarea id="txtpuntos_fuertes_debiles" type="text" class="form-control" formControlName="puntos_fuertes_debiles" placeholder="Señalar puntos fuertes y débiles del proyecto"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtobservaciones">Observaciones</label>
+          <textarea id="txtobservaciones" type="text" class="form-control" formControlName="observaciones" placeholder="Observaciones"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtmodificacion_proyecto_inicial">Si pudiera comenzar de nuevo, ¿qué modificaría del proyecto inicial o de su ejecución?</label>
+          <textarea id="txtmodificacion_proyecto_inicial" type="text" class="form-control" formControlName="modificacion_proyecto_inicial"
+            placeholder="Si pudiera comenzar de nuevo, ¿qué modificaría del proyecto inicial o de su ejecución?"></textarea>
+        </div>
+      </div>
+      <div class="row" *ngIf="final">
+        <h4 class="col-md-12 col-xs-12 text-info pb-3">Valoración por criterios</h4>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtpertinencia">Pertinencia</label>
+          <textarea id="txtpertinencia" type="text" class="form-control" formControlName="pertinencia" placeholder="Pertinencia"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtcoherencia">Coherencia</label>
+          <textarea id="txtcoherencia" type="text" class="form-control" formControlName="coherencia" placeholder="Coherencia"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txteficacia_impacto">Eficacia e impacto</label>
+          <textarea id="txteficacia_impacto" type="text" class="form-control" formControlName="eficacia_impacto" placeholder="Eficacia e impacto"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txteficiencia">Eficiencia</label>
+          <textarea id="txteficiencia" type="text" class="form-control" formControlName="eficiencia" placeholder="Eficiencia"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtviabilidad_sostenibilidad">Viabilidad-sostenibilidad</label>
+          <textarea id="txtviabilidad_sostenibilidad" type="text" class="form-control" formControlName="viabilidad_sostenibilidad"
+            placeholder="Viabilidad-sostenibilidad"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtamortizacion">Amortizacion</label>
+          <textarea id="txtamortizacion" type="text" class="form-control" formControlName="amortizacion" placeholder="Amortizacion"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtcobertura">Cobertura</label>
+          <textarea id="txtcobertura" type="text" class="form-control" formControlName="cobertura" placeholder="Cobertura"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtotros_criterios">Otros criterios</label>
+          <textarea id="txtotros_criterios" type="text" class="form-control" formControlName="otros_criterios" placeholder="Otros criterios"></textarea>
+        </div>
+      </div>
+      <div class="row" *ngIf="final">
+        <h4 class="col-md-12 col-xs-12 text-info pb-3">Entrega final del proyecto</h4>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtfinalizacion_transferencia">Finalización y transferencia del Proyecto. Grado de sostenibilidad de la intervención</label>
+          <textarea id="txtfinalizacion_transferencia" type="text" class="form-control" formControlName="finalizacion_transferencia"
+            placeholder="Finalización y transferencia del Proyecto. Grado de sostenibilidad de la intervención"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtreceptividad_sociolocal">Receptividad del socio local y del colectivo meta</label>
+          <textarea id="txtreceptividad_sociolocal" type="text" class="form-control" formControlName="receptividad_sociolocal" placeholder="Receptividad del socio local y del colectivo meta"></textarea>
+        </div>
+        <div class="col-md-6 col-xs-12 form-group">
+          <label for="txtvisibilidad_complementariedad">Visibilidad y complementariedad</label>
+          <textarea id="txtvisibilidad_complementariedad" type="text" class="form-control" formControlName="visibilidad_complementariedad"
+            placeholder="Visibilidad y complementariedad"></textarea>
+        </div>
+      </div>
+      <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+        <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmInforme.valid">Guardar</button>
+        <button type="button" class="btn btn-outline-dark btn-form-inline" (click)="backToList()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

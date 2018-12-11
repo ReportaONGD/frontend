@@ -1,0 +1,88 @@
+<div *ngIf="actividad | async" class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Recursos
+        <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" [disabled]="!(actividadExist | async)"
+                (click)="addNewRecurso()" *ngIf="!isEjecucion"
+                style="float: right">
+          <i class="fa fa-plus"></i>
+        </button>
+      </h5>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item justify-content-between">
+          <div class="row">
+            <div class="col-md-1 col-xs-1 text-center">
+  
+            </div>
+            <div class="col-md-3 col-xs-3 text-center form-group no-margin"><label class="label-cabecera">Descripción</label></div>
+            <div class="col-md-8 col-xs-8 text-center form-group no-margin"><label class="label-cabecera">Coste</label></div>
+          </div>
+  
+        </li>
+        <li class="list-group-item justify-content-between" *ngIf="isNewRecurso">
+          <form [formGroup]="frmRecurso" >
+            <div class="row">
+              <div class="col-md-2 col-xs-2 btn-group-sm" role="group">
+                <button type="button"  class="btn btn-success" ngbTooltip="Guardar" placement="top"
+                        [disabled]="!frmRecurso.valid" (click)="onSubmit()">
+                  <i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-secondary"  ngbTooltip="Limpìar Campos" placement="top"
+                        (click)="cancel()">
+                  <i class="fa fa-remove"></i>
+                </button>
+              </div>
+              
+              <div class="col-md-7 col-xs-7 form-group no-margin">
+                <textarea  class="form-control"
+                           formControlName="descripcion"
+                       
+                          placeholder="Descripción"></textarea>
+                <div *ngIf="frmRecurso.controls.descripcion.invalid 
+                            && (frmRecurso.controls.descripcion.dirty || frmRecurso.controls.descripcion.touched)"
+                     class="alert alert-danger alert-form">
+                  <span *ngIf="frmRecurso.controls.descripcion.hasError('required')">El campo descripción es obligatorio.</span>
+                </div>
+              </div>
+              <div class="col-md-3 col-xs-3 form-group no-margin">
+                <input type="number" class="form-control"
+                       formControlName="coste"
+                       placeholder="Coste">
+                <div *ngIf="frmRecurso.controls.coste.invalid 
+                          && (frmRecurso.controls.coste.dirty || frmRecurso.controls.coste.touched)"
+                     class="alert alert-danger alert-form">
+                  <span *ngIf="frmRecurso.controls.coste.hasError('required')">El campo coste es obligatorio.</span>
+                </div>
+              </div>
+            </div>
+          </form>
+  
+        </li>
+        <li class="list-group-item justify-content-between" *ngFor="let recurso of recursos">
+          <div class="row">
+            <div class="col-md-2 col-xs-2 text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+              <button type="button" class="btn btn-primary" [disabled]="isNewRecurso" ngbTooltip="Editar"
+                      placement="top"
+                      (click)="editRecurso(recurso)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button type="button" class="btn btn-danger" ngbTooltip="Eliminar" placement="top" 
+                      (click)="openModalRemove(recurso)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+            <div class="col-md-7 col-xs-7 text-center form-group no-margin">
+              {{recurso.descripcion}}
+            </div>
+            <div class="col-md-3 col-xs-3 text-center form-group no-margin">
+                {{recurso.coste}}
+              </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  
+  

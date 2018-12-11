@@ -1,0 +1,10 @@
+<div class="form-label-group" [formGroup]="item">
+  <select formControlName="moneda" id="ddlMoneda" [required]="isRequired" [compareWith]="compareFn" class="form-control">
+    <option [ngValue]="null" [selected]="true" disabled>Moneda</option>
+    <option *ngFor="let moneda of monedas" [ngValue]="moneda">{{moneda.codigo}}-{{moneda.descripcion}}</option>
+  </select>
+  <label for="ddlMoneda">Moneda</label>
+  <div *ngIf="isRequired && (item.get('moneda').invalid && (item.get('moneda').dirty || item.get('moneda').touched))" class="alert alert-danger alert-form">
+    <span>El campo Moneda es obligatorio.</span>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<table class="table table-sm table-bordered table-hover table-striped">
+  <thead>
+    <tr>
+      <th style="min-width: 5%;text-align: center">Acciones</th>
+      <th style="width: 30%;text-align: center">Nombre</th>
+      <th style="width: 30%;text-align: center">Descripción</th>
+      <th style="width: 30%;text-align: center">País</th>
+      <th style="width: 5%;text-align: center">Financiador</th>
+      <th style="width: 5%;text-align: center">Implementador</th>
+      <th style="width: 5%;text-align: center">Socio Local</th>
+      <th style="width: 5%;text-align: center">Público</th>
+    </tr>
+    <tr>
+      <th class="btn-add-row">
+        <button class="btn btn-success btn-sm mb-auto btn-row" ngbTooltip="Añadir" [disabled]="isNew" (click)="onNew()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.nombre" placeholder="filtrar: Nombre"
+          class="filter-control">
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.descripcion" placeholder="filtrar: Descripción"
+          class="filter-control">
+      </th>
+      <th>
+        <!-- <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.pais.valor" placeholder="filtrar: Pais"
+          class="filter-control"> -->
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let agente of agentes | app_filter:filter let i = index">
+      <td style="width: 5%" scope="row" style="text-align: center;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="onEdit(agente)" placement="top" ngbTooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" placement="top" ngbTooltip="Eliminar" (click)="onDelete(agente)">
+          <i class="fa  fa-trash-o"></i>
+        </button>
+      </td>
+      <td style="width: 30%" scope="row" >
+        <div ngbPopover="{{agente.nombre}}" triggers="mouseenter:mouseleave" popoverTitle="Nombre">
+        {{(agente.nombre.length >25) ? (agente.nombre | slice:0:25) + '...' : (agente.nombre)}}
+        </div>
+      </td>
+      <td style="width: 30%" scope="row">
+        <div ngbPopover="{{agente.descripcion}}" triggers="mouseenter:mouseleave" popoverTitle="Descripcion">
+          {{(agente.descripcion.length >25) ? (agente.descripcion | slice:0:25) + '...' : (agente.descripcion)}}
+        </div>
+      </td>
+      <td style="width: 30%" scope="row">{{agente.pais.valor}}</td>
+      <td style="width: 5%" scope="row">
+        <i class="fa  fa-{{agente.financiador   ? 'check' : 'times'}}"></i>
+      </td>
+      <td style="width: 5%" scope="row">
+        <i class="fa  fa-{{agente.implementador   ? 'check' : 'times'}}"></i>
+      </td>
+      <td style="width: 5%" scope="row">
+        <i class="fa  fa-{{agente.socio_local   ? 'check' : 'times'}}"></i>
+      </td>
+      <td style="width: 5%" scope="row">
+        <i class="fa  fa-{{agente.publico   ? 'check' : 'times'}}"></i>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="showAlert()">
+  <ngb-alert type='info'>No existe ningún agente, pulse en el botón + para agregar una nueva.</ngb-alert>
+</p>

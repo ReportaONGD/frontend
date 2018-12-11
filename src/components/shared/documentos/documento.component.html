@@ -1,0 +1,74 @@
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Documentos
+        <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+        <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Añadir" style="float: right" [disabled]="showForm"
+          (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </h5>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item justify-content-between" *ngIf="showForm" style="padding-top: 2rem;">
+          <form [formGroup]="frmDocumento" (submit)="save()">
+            <div class="row">
+              <div class="col-md-2 col-xs-2 btn-group-sm" style="padding-top: 2.5rem;" role="group">
+                <button type="button" class="btn btn-secondary" ngbTooltip="Cancelar" placement="top" (click)="cancel()">
+                  <i class="fa fa-remove"></i>
+                </button>
+                <button type="submit" class="btn btn-success" ngbTooltip="Guardar" placement="top" [disabled]="!frmDocumento.valid">
+                    <i class="fa fa-check"></i>
+               </button>
+              </div>
+              <div class="col-md-9 col-xs-9 form-group no-margin">
+                <div class="form-group">
+                  <label>Seleccionar Fichero</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <!--esto va en el accept image/*,  -->
+                      <input placement="top" ngbTooltip="{{fileName}}" formControlName="file" 
+                             type="file" class="custom-file-input" accept="application/pdf"
+                        id="txtFile" (change)="fileInputChange($event)" />
+                      <label class="custom-file-label" for="txtFile">{{fileName}}</label>
+                    </div>
+                  </div>
+                  <div *ngIf="frmDocumento.get('file').invalid 
+                        && (frmDocumento.get('file').dirty || frmDocumento.get('file').touched)" class="alert alert-danger alert-form">
+                    <span *ngIf="frmDocumento.get('file').hasError('required')">El campo fichero es obligatorio.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </li>
+        <li class="list-group-item justify-content-between" *ngIf="!showAlert()">
+          <div class="row">
+            <div class="col text-center form-group no-margin">Fichero</div>
+            <div class="col-md-2 col-xs-2"></div>
+          </div>
+        </li>
+        <li class="list-group-item justify-content-between" *ngFor="let documento of documentos; let i = index">
+          <div class="row">
+            <div col-md-2 col-xs-2>
+              <button class="btn btn-success btn-sm mb-auto" type="button" ngbTooltip="Descargar" (click)="download(documento)">
+                <i class="fa fa-download"></i>
+              </button>
+              <button class="btn btn-danger btn-sm mb-auto" type="button" ngbTooltip="Eliminar" (click)="openModalRemove(documento)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+            <div class="col" (click)="download(documento)">{{documento.nombre}}</div>
+          </div>
+        </li>
+      </ul>
+      <p>
+        <ngb-alert *ngIf="showAlert()" type='info'>No existe ningún documento , pulse en el botón + para agregar uno nuevo.</ngb-alert>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="close(false)">Cerrar</button>
+</div>

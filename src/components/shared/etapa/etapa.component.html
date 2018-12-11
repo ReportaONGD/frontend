@@ -1,0 +1,11 @@
+<div class="form-label-group" [formGroup]="item">
+    <select id="ddlEtapas" formControlName="etapa" [compareWith]="compareFn" class="form-control">
+      <!-- <option [ngValue]="null"  disabled>Etapa</option> -->
+      <option *ngFor="let etapa of etapas" [ngValue]="etapa">{{etapa.nombre}}</option>
+    </select>
+    <label for="ddlEtapas">Etapas</label>
+    <div *ngIf="item.controls.etapa.invalid && (item.controls.etapa.dirty || item.controls.etapa.touched)" class="alert alert-danger alert-form">
+      <span *ngIf="item.controls.etapa.hasError('required')">El campo etapa es obligatorio.</span>
+    </div>
+</div>
+  

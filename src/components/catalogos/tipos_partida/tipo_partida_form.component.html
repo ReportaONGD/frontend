@@ -1,0 +1,56 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmTipoPartida" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input id="txtCodigo" type="text" class="form-control" formControlName="codigo" placeholder="Código" appAutofocus>
+              <label for="txtCodigo">Código</label>
+              <div *ngIf="frmTipoPartida.get('codigo').invalid
+                  && (frmTipoPartida.get('codigo').dirty || frmTipoPartida.get('codigo').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmTipoPartida.get('codigo').hasError('required')">El Código es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtNombre" class="form-control" formControlName="nombre" placeholder="Nombre">
+              <label for="txtNombre">Nombre</label>
+              <div *ngIf="frmTipoPartida.get('nombre').invalid
+                    && (frmTipoPartida.get('nombre').dirty || frmTipoPartida.get('nombre').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmTipoPartida.get('nombre').hasError('required')">El Nombre es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+                <select id="ddlCostes" formControlName="costes" [compareWith]="compareFn" class="form-control">
+                    <option [ngValue]="null" [selected]="true" disabled>Costes</option>
+                    <option *ngFor="let c of (costes | async)" [ngValue]="c">{{c.valor}}</option>
+                  </select>
+                  <label for="ddlCostes">Costes</label>
+                  <div *ngIf="frmTipoPartida.get('costes').invalid 
+                        && (frmTipoPartida.get('costes').dirty || frmTipoPartida.get('costes').touched)" class="alert alert-danger alert-form">
+                    <span *ngIf="frmTipoPartida.get('costes').hasError('required')">El campo coste es obligatorio.</span>
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+            <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmTipoPartida.valid">Guardar</button>
+            <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

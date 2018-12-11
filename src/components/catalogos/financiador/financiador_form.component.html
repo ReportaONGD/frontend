@@ -1,0 +1,92 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmAgente" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" formControlName="nombre" id="ddlNombre" placeholder="Nombre" appAutofocus>
+              <div *ngIf="frmAgente.get('nombre').invalid
+                  && (frmAgente.get('nombre').dirty || frmAgente.get('nombre').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmAgente.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+              </div>
+              <label for="ddlNombre">Nombre</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" formControlName="descripcion"  id="ddlDesc" placeholder="Descripción">
+              <div *ngIf="frmAgente.get('descripcion').invalid
+                && (frmAgente.get('descripcion').dirty || frmAgente.get('descripcion').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmAgente.get('descripcion').hasError('required')">El campo descripcion es obligatorio.</span>
+              </div>
+              <label for="ddlDesc">Descripción</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <app-paises-component [item]="frmAgente" [isMultiple]="false"></app-paises-component>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="financiador">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Financiador
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Sí
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="implementador">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Implementador
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Sí
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="socio_local">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Socio Local
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Sí
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="publico">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Público
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Sí
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+            <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmAgente.valid">Guardar</button>
+            <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

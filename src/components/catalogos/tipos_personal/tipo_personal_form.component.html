@@ -1,0 +1,39 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmTipoPersonal" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-10 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input id="txtCodigo" type="text" class="form-control" formControlName="codigo" placeholder="Código" appAutofocus>
+              <label for="txtCodigo">Código</label>
+              <div *ngIf="frmTipoPersonal.get('codigo').invalid
+                      && (frmTipoPersonal.get('codigo').dirty || frmTipoPersonal.get('codigo').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmTipoPersonal.get('codigo').hasError('required')">El campo código es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input id="txtValor" type="text" class="form-control" formControlName="valor" placeholder="Valor" appAutofocus>
+              <label for="txtValor">Valor</label>
+              <div *ngIf="frmTipoPersonal.get('valor').invalid
+                    && (frmTipoPersonal.get('valor').dirty || frmTipoPersonal.get('valor').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmTipoPersonal.get('valor').hasError('required')">El campo valor es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmTipoPersonal.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

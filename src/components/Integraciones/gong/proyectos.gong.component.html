@@ -1,0 +1,70 @@
+<!-- financiador_principal_id:1
+financiador_principal_nombre:"AECID"
+gestor:"ONG-INT"
+gestor_id:2
+id:1
+identificador_financiador:"AECID PRUEBA"
+nombre:"2014-GONG"
+seguimiento_periodos:Array(3) [Object, Object, Object]
+titulo:"Proyecto para la implantación en nuestra ONG de GONG" -->
+<div>
+<table class="table table-sm table-bordered table-hover table-striped">
+  <thead>
+    <tr>
+      <th style="width:5%;max-width: 5%;text-align: center">Acciones</th>
+      <th style="width: 15%;text-align: center">Nombre</th>
+      <th style="width: 15%;text-align: center">Título</th>
+      <th style="width: 15%;text-align: center">Gestor</th>
+      <th style="width: 15%;text-align: center">Financiador</th>
+    </tr>
+    <tr>
+      <th class="btn-add-row">
+        <button class="btn btn-success btn-sm mb-auto btn-row" [disabled]="(showAlertFinanciador | async) || (showAlertSocio | async)" ngbTooltip="Añadir" (click)="onCreate()">
+          <i class="fa fa-plus" ></i>
+        </button>
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.codigo" placeholder="filtrar: Nombre"
+          class="filter-control">
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.nombre" placeholder="filtrar: Título"
+          class="filter-control">
+      </th>
+      <th>
+        <input type="text" required="false" [ngModelOptions]="{standalone:true}" [(ngModel)]="filter.pais" placeholder="filtrar: Gestor"
+          class="filter-control">
+      </th>
+     
+      <!-- <th></th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let elemento of proyectos">
+      <td style="max-width: 5%" scope="row" style="text-align: center;">
+         <button type="button" class="btn btn-primary btn-sm" (click)="importar(elemento.proyecto)" placement="top" ngbTooltip="Importar">
+          <i class="fa fa-file"></i>
+        </button>
+        <!--<button type="button" class="btn btn-danger btn-sm" (click)="openModalRemove(proyecto)" placement="top" ngbTooltip="Eliminar">
+          <i class="fa fa-trash-o"></i>
+        </button> -->
+      </td>
+      <td scope="row">
+        <span>{{elemento.proyecto.nombre}}</span>
+      </td>
+      <td scope="row">
+        <span>{{elemento.proyecto.titulo}}</span>
+      </td>
+      <td scope="row">
+        <span>{{elemento.proyecto.gestor}}</span>
+      </td>
+      <td scope="row">
+          <span>{{elemento.proyecto.financiador_principal_nombre}}</span>
+        </td>
+    </tr>
+  </tbody>
+</table>
+<div class="my-container" [hidden]="!isLoading">
+  <ngx-loading show=true; [config]="config"></ngx-loading>
+</div>
+</div>

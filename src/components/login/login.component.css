@@ -1,0 +1,24 @@
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.alert-login
+{
+  width: 100%;
+  margin-bottom: 0px !important;
+}
+@media(min-width: 500px)
+{
+  .card-login{
+    max-width: 33%;
+    margin: 0 auto;
+  }
+}
+@media(min-width: 1000px)
+{
+  .card-login{
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}

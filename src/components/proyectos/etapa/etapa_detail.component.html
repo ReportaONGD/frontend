@@ -1,0 +1,94 @@
+<div [class]="modal-body">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="form-signin-heading">{{title}}</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="frmEtapa" (submit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-12 col-xs-12 form-group">
+              <input type="text" class="form-control"
+                     formControlName="nombre"
+                     placeholder="Nombre" 
+                     appAutofocus>
+              <div
+                *ngIf="frmEtapa.get('nombre').invalid
+                && (frmEtapa.get('nombre').dirty || frmEtapa.get('nombre').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmEtapa.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 form-group">
+              <textarea type="text" class="form-control"
+                     formControlName="descripcion"
+                     placeholder="Descripción" 
+                     ></textarea>
+              <div
+                *ngIf="frmEtapa.get('descripcion').invalid
+                && (frmEtapa.get('descripcion').dirty || frmEtapa.get('descripcion').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmEtapa.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12 form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="Fecha Inicio" type="text"
+                      formControlName="_fecha_inicio"
+                      ngbDatepicker
+                      #fechaInicio="ngbDatepicker" [outsideDays]="hidden"
+                      [displayMonths]="2" [navigation]="select"
+                      [showWeekNumbers]="false"
+                      >
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="fechaInicio.toggle()" type="button">
+                    <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                *ngIf="frmEtapa.hasError('datediff') || (frmEtapa.get('_fecha_inicio').invalid 
+                && (frmEtapa.get('_fecha_inicio').dirty 
+                || frmEtapa.get('_fecha_inicio').touched))"
+                class="alert alert-danger alert-form">
+                <span
+                  *ngIf="frmEtapa.get('_fecha_inicio').hasError('required')">El campo fecha inicio es obligatorio.</span>
+                <span 
+                  *ngIf="frmEtapa.hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12 form-group" >
+              <div class="input-group">
+                <input class="form-control" placeholder="Fecha Fin" type="text"
+                      ngbDatepicker
+                      formControlName="_fecha_fin"
+                      #fechaFin="ngbDatepicker"
+                      [displayMonths]="2" [navigation]="select"
+                      [showWeekNumbers]="false"
+                      >
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="fechaFin.toggle()" type="button">
+                    <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                *ngIf="frmEtapa.hasError('datediff') || (frmEtapa.get('_fecha_fin').invalid 
+                && (frmEtapa.get('_fecha_fin').dirty 
+                || frmEtapa.get('_fecha_fin').touched))"
+                class="alert alert-danger alert-form">
+                <span
+                  *ngIf="frmEtapa.get('_fecha_fin').hasError('required')">El campo fecha fin es obligatorio.</span>
+                <span 
+                  *ngIf="frmEtapa.hasError('datediff')">La fecha de inicio ha de ser menor que la de fin.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+            <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmEtapa.valid">Guardar</button>
+            <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

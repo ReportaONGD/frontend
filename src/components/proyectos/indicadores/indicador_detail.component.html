@@ -1,0 +1,90 @@
+<a (focus)="activeModal.focused = true" (blur)="activeModal.focused = false"></a>
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmIndicador" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+                <input type="text" id="txtCodi" class="form-control" formControlName="codigo" placeholder="Código">
+                <label for="txtCodi">Código</label>
+                <div *ngIf="frmIndicador.get('codigo').invalid 
+                  && (frmIndicador.get('codigo').dirty || frmIndicador.get('codigo').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmIndicador.get('codigo').hasError('required')">El campo código es obligatorio.</span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+                <input type="number" id="txtLB" class="form-control" formControlName="linea_base" placeholder="Linea Base">
+                <label style="max-width: 100px;" for="txtLB">Linea Base</label>
+                <div *ngIf="frmIndicador.get('linea_base').invalid 
+                  && (frmIndicador.get('linea_base').dirty || frmIndicador.get('linea_base').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmIndicador.get('linea_base').hasError('required')">El campo linea base es obligatorio.</span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+                <input type="number" id="txtMeta" class="form-control" formControlName="meta" placeholder="Meta Final">
+                <label style="max-width: 100px;" for="txtMeta">Meta</label>
+                <div *ngIf="frmIndicador.get('meta').invalid && 
+                  (frmIndicador.get('meta').dirty || frmIndicador.get('meta').touched)" class="alert alert-danger alert-form">
+                  <span *ngIf="frmIndicador.get('meta').hasError('required')">El campo meta es obligatorio.</span>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea type="text" id="txtDesc" class="form-control" formControlName="descripcion" placeholder="Descripción">
+                  </textarea>
+              <label for="txtDesc">Descripción</label>
+              <div *ngIf="frmIndicador.get('descripcion').invalid 
+                      && (frmIndicador.get('descripcion').dirty || frmIndicador.get('descripcion').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmIndicador.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-12 col-xs-12 form-group" *ngIf="!isNew()" style="margin-bottom: 2rem">
+            <app-fuente-verificacion-component [ids]="ids" [indicador]="indicador" [service]="fuente_verificacion_service" [documentosService]="documentos_service"></app-fuente-verificacion-component>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group" *ngIf="isNew()">
+              <ngb-alert [dismissible]="false" type='info'>Solo se podrán agregar fuentes de verificación una vez creado el indicador.</ngb-alert>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea id="txtCom" class="form-control" formControlName="comentario" placeholder="Comentarios">
+                  </textarea>
+              <label for="txtCom">Comentarios</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea id="txtCONG" class="form-control" formControlName="comentarios_ong" placeholder="Comentarios Ong">
+                    </textarea>
+              <label for="txtCONG">Comentarios ONG</label>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <textarea id="txtCA" class="form-control" formControlName="comentarios_aecid" placeholder="Comentarios OTC/Dept Geo.">
+                  </textarea>
+              <label for="txtCA">Comentarios OTC/Dept Geo.</label>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" *ngIf="!isEjecucion" [disabled]="!frmIndicador.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

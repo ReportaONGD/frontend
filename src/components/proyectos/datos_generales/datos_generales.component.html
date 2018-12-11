@@ -1,0 +1,378 @@
+<!-- NUEVO -->
+<form (submit)="onSubmit()" [formGroup]="frmProyecto">
+  <div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+      <div class="card-header" role="tab" id="headingOne">
+        <h5 class="mb-0">
+          <a data-parent="#accordion" style="cursor: pointer;" (click)="isCollapsedFormulario = !isCollapsedFormulario" [attr.aria-expanded]="!isCollapsedFormulario"
+            aria-controls="collapseFormulario" ngbTooltip="Pulse para desplegar" placement="left">
+            Formulario de Entrada
+          </a>
+          <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Rellene el formulario de entrada para poder agregar entidades colaboradoras, aportaciones y modificaciones autorizadas por AECID"
+            popoverTitle="Información" placement="left">
+            <i class="fa fa-info"></i>
+          </button>
+        </h5>
+      </div>
+      <div id="collapseFormulario" class="collapse show" role="tabpanel" aria-labelledby="Formulario de Entrada" [ngbCollapse]="isCollapsedFormulario">
+        <div class="card-block form-project">
+          <!--CODIGO TITULO NOMBRE-->
+          <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" class="form-control" id="txtCodigo" formControlName="codigo" placeholder="Código" appAutofocus>
+                <label for="txtCodigo">Código</label>
+                <div *ngIf="frmProyecto.get('codigo').invalid && (frmProyecto.get('codigo').dirty || frmProyecto.get('codigo').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('codigo').hasError('required')">El campo Código es obligatorio.</span>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" id="txtNombre" class="form-control" formControlName="nombre" placeholder="Nombre">
+                <label for="txtNombre">Nombre</label>
+                <div *ngIf="frmProyecto.get('nombre').invalid && (frmProyecto.get('nombre').dirty || frmProyecto.get('nombre').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('nombre').hasError('required')">El campo Nombre es obligatorio.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" id="txtTitulo" class="form-control" formControlName="titulo" placeholder="Título">
+                <label for="txtTitulo">Título</label>
+                <div *ngIf="frmProyecto.get('titulo').invalid && (frmProyecto.get('titulo').dirty || frmProyecto.get('titulo').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('titulo').hasError('required')">El campo Título es obligatorio.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Descripcion  -->
+          <div class="row">
+            <div class="col-md-12 col-xs-12 form-group">
+              <div class="form-label-group">
+                <textarea id="txtDescripcion" class="form-control" formControlName="descripcion" placeholder="Descripción resumida del proyecto ejecutado y de los mecanismos de ejecución."></textarea>
+                <label for="txtDescripcion">Descripción resumida del proyecto ejecutado y de los mecanismos de ejecución.</label>
+                <!-- <div *ngIf="frmProyecto.get('titulo').invalid && (frmProyecto.get('titulo').dirty || frmProyecto.get('titulo').touched)"
+                        class="alert alert-danger alert-form">
+                        <span *ngIf="frmProyecto.get('titulo').hasError('required')">El campo Título es obligatorio.</span>
+                      </div> -->
+              </div>
+            </div>
+
+          </div>
+          <!--FECHA INICIO FECHA FIN DURACION-->
+          <!-- <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="Fecha Inicio" type="text" formControlName="_fecha_inicio" ngbDatepicker #fechaInicio="ngbDatepicker"
+                  [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="fechaInicio.toggle()" type="button">
+                    <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="frmProyecto.hasError('fechas_incorrectas') || (frmProyecto.get('_fecha_inicio').invalid && (frmProyecto.get('_fecha_inicio').dirty || frmProyecto.get('_fecha_inicio').touched))"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmProyecto.get('_fecha_inicio').hasError('required')">La Fecha de Inicio es obligatoria.</span>
+                <span *ngIf="frmProyecto.hasError('fechas_incorrectas')">La Fecha de Inicio debe ser menor que la Fecha Fin .</span>
+              </div>
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="Fecha Fin" type="text" formControlName="_fecha_fin" ngbDatepicker #fechaFin="ngbDatepicker"
+                  [displayMonths]="2" [navigation]="select" [showWeekNumbers]="false">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="fechaFin.toggle()" type="button">
+                    <i class="fa fa-calendar" style="width: 1.2rem; height: 1rem; cursor: pointer;"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="frmProyecto.hasError('fechas_incorrectas') || (frmProyecto.get('_fecha_fin').invalid && (frmProyecto.get('_fecha_fin').dirty || frmProyecto.get('_fecha_fin').touched))"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmProyecto.get('_fecha_fin').hasError('required')">La Fecha de Fin es obligatoria.</span>
+                <span *ngIf="frmProyecto.hasError('fechas_incorrectas')">La Fecha de Inicio debe ser menor que la Fecha Fin .</span>
+              </div>
+            </div>
+            <div class="col-md-4 col-xs-12 form-group">
+              <input type="text" class="form-control" formControlName="duracion">
+            </div>
+          </div> -->
+          <!--GESTOR ONG SOCIO LOCAL-->
+          <div class="row">
+            <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <!-- <input type="text" id="txtGestor" class="form-control" formControlName="gestor" placeholder="Gestor">
+                <label for="txtGestor">Gestor</label>
+                <div *ngIf="frmProyecto.get('gestor').invalid && (frmProyecto.get('gestor').dirty || frmProyecto.get('gestor').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('gestor').hasError('required')">El campo Gestor es obligatorio.</span>
+                </div> -->
+                <app-implementador-combo-component [etiqueta]="'Gestor'" [nombreControl]="'gestor'" [item]="frmProyecto"></app-implementador-combo-component>
+              </div>
+            </div>
+            <!-- <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" id="txtOng" class="form-control" formControlName="ong_agrupacion" placeholder="Ong/Agrupación">
+                <label for="txtOng">Ong/Agrupación</label>
+                <div *ngIf="frmProyecto.get('ong_agrupacion').invalid && (frmProyecto.get('ong_agrupacion').dirty || frmProyecto.get('ong_agrupacion').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('ong_agrupacion').hasError('required')">El campo Ong/Agrupación es obligatorio.</span>
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" id="txtSocio" class="form-control" formControlName="socio_local" placeholder="Socio Local">
+                <label for="txtSocio">Socio Local</label>
+                <div *ngIf="frmProyecto.get('socio_local').invalid && (frmProyecto.get('socio_local').dirty || frmProyecto.get('socio_local').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('socio_local').hasError('required')">El campo Socio Local es obligatorio.</span>
+                </div>
+              </div>
+
+            </div> -->
+            <div class="col-md-8 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="text" id="txtProvincia" class="form-control" formControlName="provincia_municipio" placeholder="Provincia/Municipio">
+                <label for="txtProvincia">Provincia/Municipio</label>
+                <div *ngIf="frmProyecto.get('provincia_municipio').invalid && (frmProyecto.get('provincia_municipio').dirty || frmProyecto.get('provincia_municipio').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('provincia_municipio').hasError('required')">El campo Municipio es obligatorio.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--PROVINCIAMUNICIPIO-->
+          <div class="row">
+
+            <!-- <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="number" id="txtCosteTotal" class="form-control" formControlName="coste_total" placeholder="Coste Total">
+                <label for="txtCosteTotal">Coste Total</label>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="number" id="txtAportacionOng" class="form-control" formControlName="aportacion_ong" placeholder="Aportación Ong">
+                <label for="txtAportacionOng">Aportación Ong</label>
+                <div *ngIf="frmProyecto.get('aportacion_ong').invalid && (frmProyecto.get('aportacion_ong').dirty || frmProyecto.get('aportacion_ong').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('aportacion_ong').hasError('required')">El campo Aportacion Ong es obligatorio.</span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <!--COSTE TOTAL, APORTACION AECID, APORTACION ONG-->
+          <div class="row">
+            <!-- <div class="col-md-4 col-xs-12 form-group">
+              <div class="form-label-group">
+                <input type="number" id="txtAportacionFinanciador" class="form-control" formControlName="aportacion_financiador" placeholder="Aportación Financiador">
+                <label for="txtAportacionFinanciador"></label>
+                <div *ngIf="frmProyecto.get('aportacion_financiador').invalid && (frmProyecto.get('aportacion_financiador').dirty || frmProyecto.get('aportacion_financiador').touched)"
+                  class="alert alert-danger alert-form">
+                  <span *ngIf="frmProyecto.get('aportacion_financiador').hasError('required')">El campo Aportacion Financiador es obligatorio.</span>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-4 col-xs-12 form-group float-label">
+                <div class="form-label-group">
+                    <select  formControlName="convocatoria" id="ddlConvocatoria" [compareWith]="compareConvocatoriaFn" class="form-control">
+                      <option [ngValue]="null" [selected]="true" disabled>Convocatoria</option>
+                      <option *ngFor="let convocatoria of convocatorias" [ngValue]="convocatoria">{{convocatoria.nombre}}</option>
+                    </select>
+                    <label for="ddlConvocatoria">Convocatoria</label>
+                    <div *ngIf="(frmProyecto.get('convocatoria').invalid && (frmProyecto.get('convocatoria').dirty || frmProyecto.get('convocatoria').touched))"
+                      class="alert alert-danger alert-form">
+                      <span>El campo convocatoria es obligatorio.</span>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-xs-12 form-group float-label">
+              <app-paises-component [item]="frmProyecto" [isMultiple]="true"></app-paises-component>
+            </div>
+            <div class="col-md-4 col-xs-12 form-group float-label" *ngIf="combo_financiadores">
+              <app-financiador-combo-component [item]="frmProyecto" [financiadores]="combo_financiadores" [isAecid]="isAecid" [isMultiple]="true"></app-financiador-combo-component>
+              <!-- <select multiple formControlName="financiador" id="ddlFinanciador" [compareWith]="compareFinanciadorFn" class="form-control">
+                  <option *ngFor="let financiador of financiadores" [ngValue]="financiador">{{financiador.nombre}}</option>
+                </select>
+                <label for="ddlFinanciador">Financiador</label>
+                <div *ngIf="isRequired && (frmProyecto.get('financiador').invalid && (frmProyecto.get('financiador').dirty || frmProyecto.get('financiador').touched))"
+                  class="alert alert-danger alert-form">
+                  <span>El campo financiador es obligatorio.</span>
+                </div> -->
+            </div>
+            <div class="col-md-4 col-xs-12 form-group float-label">
+              <app-implementador-combo-component [etiqueta]="'Socios Locales'" [socio]="true" [nombreControl]="'implementador'" [item]="frmProyecto" [isMultiple]="true"></app-implementador-combo-component>
+            </div>
+            <div *ngIf="!isNew" class="col-md-8 col-xs-12 form-group text-right">
+              <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="estado_proyecto">
+                <label ngbButtonLabel class="btn btn-outline-dark">
+                  Estado del Proyecto
+                </label>
+                <label *ngFor="let estado_proyecto of estados_proyecto" ngbButtonLabel class="btn" [ngClass]='{"btn-secondary":proyecto.estado_proyecto._id !== estado_proyecto._id, "btn-primary":proyecto.estado_proyecto._id === estado_proyecto._id }'>
+                  <input ngbButton type="radio" (click)="changeEstado(estado_proyecto)" [value]="estado_proyecto._id"> {{estado_proyecto.nombre}}
+                </label>
+
+                <!-- <label ngbButtonLabel class="btn-primary" *ngFor="let estado_proyecto of estados_proyecto">
+                    <input ngbButton type="radio" [(ngModel)]="proyecto.estado_proyecto._id" [ngModelOptions]="{standalone:true}"  value="{{estado_proyecto}}"> {{estado_proyecto.nombre}} 
+                  </label> -->
+              </div>
+              <!-- <div class="form-label-group">
+                <select formControlName="estado_proyecto" id="estado_proyecto"  class="form-control" [compareWith]="compareFn">
+                  <option *ngFor="let estado_proyecto of estados_proyecto" [ngValue]="estado_proyecto">{{estado_proyecto.nombre}}</option>
+                </select>
+                <label for="estado_proyecto">Estado</label>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="row" *ngIf="!isNew && (proyecto.presupuestos && proyecto.presupuestos.length > 0)">
+            <div class="col-md-12 col-xs-12 form-group">
+              <ul class="list-group">
+                <li class="list-group-item justify-content-between">
+                  <div class="row">
+                    <div class="col-md-12 col-xs-12 text-left form-group no-margin">
+                      <label class="label-cabecera">Aportación Financiadores</label>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item justify-content-between">
+                  <div class="row">
+                    <div class="col-md-12 col-xs-12 text-left" *ngFor="let key of keys">
+                      <label *ngFor="let entry of financiadores[key] | sumas:key ">
+                        {{key}}:
+                        <strong>{{entry.value}}</strong>
+                      </label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-12 text-right">
+            <button class="btn btn-primary" [disabled]="!frmProyecto.valid" type="submit">Guardar
+            </button>
+          </div>
+        </div>
+
+        <!--AUDITORIA-->
+        <!-- <div class="row" style="margin: 0px;">
+            <div class="col-xs-12 form-group">
+              <label>Presentación de la justificación con informe de auditoría
+                <input type="checkbox" [(ngModel)]="project.auditoria" [ngModelOptions]="{standalone:true}">
+              </label>
+            </div>
+          </div> -->
+      </div>
+    </div>
+  </div>
+  <p></p>
+  <!-- <div class="card" *ngIf="!isNew">
+    <div class="card-header" role="tab" id="headingTwo">
+      <h5 class="mb-0">
+        <a data-parent="#accordion" style="cursor: pointer;" (click)="iscollapseEntidades = !iscollapseEntidades" [attr.aria-expanded]="!iscollapseEntidades"
+          aria-controls="collapseEntidades" ngbTooltip="Pulse para desplegar" placement="left">
+          Otras Entidades Colaboradoras
+        </a>
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Señalar si se incorporado alguna entidad de relevancia no prevista en la formulación"
+          popoverTitle="Información" placement="left">
+          <i class="fa fa-info"></i>
+        </button>
+      </h5>
+
+    </div>
+    <div id="collapseEntidades" class="collapse show" role="tabpanel" aria-labelledby="Formulario de Entrada" [ngbCollapse]="iscollapseEntidades">
+      <div class="card-block form-project">
+        <app-entidades-component [ids]="ids"></app-entidades-component>
+      </div>
+    </div>
+  </div>
+  <p></p> -->
+  <!-- <div class="card" *ngIf="!isNew">
+    <div class="card-header" role="tab" id="headingThree">
+      <h5 class="mb-0">
+        <a data-parent="#accordion" style="cursor: pointer;" (click)="iscollapseAportaciones = !iscollapseAportaciones" [attr.aria-expanded]="!iscollapseAportaciones"
+          aria-controls="collapseAportaciones" ngbTooltip="Pulse para desplegar" placement="left">
+          Otras Aportaciones
+        </a>
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Relación de otros finaciadores y sus aportaciones en Euros"
+          popoverTitle="Información" placement="left">
+          <i class="fa fa-info"></i>
+        </button>
+      </h5>
+    </div>
+    <div *ngIf="proyecto.presupuestos?.length > 0" id="collapseAportaciones" class="collapse show" role="tabpanel" [ngbCollapse]="iscollapseAportaciones" aria-labelledby="Formulario de Entrada">
+    <div id="collapseAportaciones" class="collapse show" role="tabpanel" [ngbCollapse]="iscollapseAportaciones" aria-labelledby="Formulario de Entrada">
+      <div class="card-block form-project">
+        <app-aportaciones-component [ids]="ids"></app-aportaciones-component>
+      </div>
+    </div>
+  </div> -->
+  <p></p>
+  <div class="card" *ngIf="!isNew">
+    <div class="card-header" role="tab" id="headingFour">
+      <h5 class="mb-0">
+        <a data-parent="#accordion" style="cursor: pointer;" (click)="iscollapseModificaciones = !iscollapseModificaciones" aria-controls="collapseModificaciones"
+          ngbTooltip="Pulse para desplegar" placement="left">
+          Modificaciones autorizadas por AECID
+        </a>
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Breve descripción y día, mes y año de las modificaciones autorizadas por la AECID."
+          popoverTitle="Información" placement="left">
+          <i class="fa fa-info"></i>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseModificaciones" class="collapse show" role="tabpanel" aria-labelledby="Modificaciones autorizadas por AECID"
+      [ngbCollapse]="iscollapseModificaciones">
+      <div class="card-block form-project">
+        <app-modificacines-component [ids]="ids"></app-modificacines-component>
+      </div>
+    </div>
+  </div>
+  <p></p>
+  <div class="card" *ngIf="!isNew">
+    <div class="card-header" role="tab" id="headingFive">
+      <h5 class="mb-0">
+        <a data-parent="#accordion" style="cursor: pointer;" (click)="iscollapseEtapas = !iscollapseEtapas" aria-controls="collapseEtapas"
+          ngbTooltip="Pulse para desplegar" placement="left">
+          Etapas
+        </a>
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Definición de las etapas por las que pasará el proyecto."
+          popoverTitle="Información" placement="left">
+          <i class="fa fa-info"></i>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseEtapas" class="collapse show" role="tabpanel" aria-labelledby="Etapas" [ngbCollapse]="iscollapseEtapas">
+      <div class="card-block form-project">
+        <app-etapa-component [ids]="ids"></app-etapa-component>
+      </div>
+    </div>
+  </div>
+  <p></p>
+  <div class="card" *ngIf="!isNew">
+    <div class="card-header" role="tab" id="headingFive">
+      <h5 class="mb-0">
+        <a data-parent="#accordion" style="cursor: pointer;" (click)="iscollapsePeriodos = !iscollapsePeriodos" aria-controls="iscollapsePeriodos"
+          ngbTooltip="Pulse para desplegar" placement="left">
+          Periodos
+        </a>
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="top" style="float:right" ngbPopover="Definición de los peridos por los que pasará el proyecto."
+          popoverTitle="Información" placement="left">
+          <i class="fa fa-info"></i>
+        </button>
+      </h5>
+    </div>
+    <div id="iscollapsePeriodos" class="collapse show" role="tabpanel" aria-labelledby="Periodos" [ngbCollapse]="iscollapsePeriodos">
+      <div class="card-block form-project">
+        <app-periodo-component [ids]="ids"></app-periodo-component>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,206 @@
+<div class="card">
+  <div class="card-header" role="tab" id="headingOne">
+    <h5 class="mb-0">
+      Listado de Personas asociadas al proyecto
+      <div class="btn-group" role="group" style="float:right">
+        <button type="button" class="btn btn-outline-secondary  btn-sm" placement="left" style="min-width: 29px" ngbPopover="Agregue el personal asociado al proyecto."
+          popoverTitle="Información">
+          <i class="fa fa-info"></i>
+        </button>
+        <button class="btn btn-success btn-sm mb-auto" *ngIf="!isEjecucion" [disabled]="(showAlertCategoria | async)" type="button" ngbTooltip="Añadir" (click)="add()">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="col-xs-12" style="margin-bottom: 1rem" *ngIf="showForm">
+      <form (submit)="onSubmit()" [formGroup]="frmPersona">
+        <div class="row">
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtNombre" class="form-control" formControlName="nombre" placeholder="Nombre" appAutofocus>
+              <label for="txtNombre">Nombre</label>
+              <div *ngIf="frmPersona.get('nombre').invalid && (frmPersona.get('nombre').dirty || frmPersona.get('nombre').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('nombre').hasError('required')">El campo nombre es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="form-label-group">
+              
+              <select formControlName="categoria" id="ddlCategoria" [compareWith]="compareCategoriaFn" class="form-control">
+                <option [ngValue]="null" disabled>Categoría</option>
+                <option *ngFor="let categoria of categorias" [ngValue]="categoria">{{categoria.valor}}</option>
+              </select>
+              <label for="ddlCategoria">Categoría</label>
+              <div *ngIf="frmPersona.get('categoria').invalid && (frmPersona.get('categoria').dirty || frmPersona.get('categoria').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('categoria').hasError('required')">El campo categoría es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="form-label-group">
+             
+              <select formControlName="tipo_personal" id="ddlTipoPersonal" [compareWith]="compareTipoFn" class="form-control">
+                <option [ngValue]="null" disabled>Tipo</option>
+                <option *ngFor="let tipo of personal_tipos" [ngValue]="tipo">{{tipo.valor}}</option>
+              </select>
+              <label for="ddlTipoPersonal">Tipo</label>
+              <div *ngIf="frmPersona.get('tipo_personal').invalid && (frmPersona.get('tipo_personal').dirty || frmPersona.get('tipo_personal').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('tipo_personal').hasError('required')">El campo tipo es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-6 form-group">
+            <div class="form-label-group">
+              
+              <select formControlName="contrato" id="ddlContrato" [compareWith]="compareContratoFn" class="form-control">
+                <option [ngValue]="null"  disabled>Contrato</option>
+                <option *ngFor="let contrato of contratos" [ngValue]="contrato">{{contrato.valor}}</option>
+              </select>
+              <label for="ddlContrato">Contrato</label>
+              <div *ngIf="frmPersona.get('contrato').invalid && (frmPersona.get('contrato').dirty || frmPersona.get('contrato').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('contrato').hasError('required')">El campo contrato es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+             
+              <input type="text" id="txtResidencia" class="form-control" formControlName="residencia" placeholder="Residencia">
+              <label for="txtResidencia">Residencia</label>
+              <div *ngIf="frmPersona.get('residencia').invalid && (frmPersona.get('residencia').dirty || frmPersona.get('residencia').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('residencia').hasError('required')">El campo residencia es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+             
+              <input type="number" id="txtHoras" class="form-control" formControlName="horas_imputadas" placeholder="Horas Imputadas">
+              <label for="txtHoras">Horas Imputadas</label>
+              <div *ngIf="frmPersona.get('horas_imputadas').invalid && (frmPersona.get('horas_imputadas').dirty || frmPersona.get('horas_imputadas').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('horas_imputadas').hasError('required')">El campo horas imputadas es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+             
+              <input type="number" id="txtMeses" class="form-control" formControlName="meses" placeholder="Meses">
+              <label for="txtMeses">Meses</label>
+              <div *ngIf="frmPersona.get('meses').invalid && (frmPersona.get('meses').dirty || frmPersona.get('meses').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('meses').hasError('required')">El campo meses imputadas es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+             
+              <input type="number" id="txtSalarioMensual" class="form-control" formControlName="salario_mensual" placeholder="Salario Mensual">
+              <label for="txtSalarioMensual">Salario Mensual</label>
+              <div *ngIf="frmPersona.get('salario_mensual').invalid && (frmPersona.get('salario_mensual').dirty || frmPersona.get('salario_mensual').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('salario_mensual').hasError('required')">El campo salario mensual imputadas es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-xs-12 form-group">
+            <div class="form-label-group">
+             
+              <input type="number" id="txtSalarioTotal" class="form-control" formControlName="salario_total" placeholder="Salario Total">
+              <label for="txtSalarioTotal">Salario Total</label>
+              <div *ngIf="frmPersona.get('salario_total').invalid && (frmPersona.get('salario_total').dirty || frmPersona.get('salario_total').touched)"
+                class="alert alert-danger alert-form">
+                <span *ngIf="frmPersona.get('salario_total').hasError('required')">El campo salario total imputadas es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary" [disabled]="!frmPersona.valid" type="submit" *ngIf="!isEjecucion">
+            Guardar
+          </button>
+          <button class="btn btn-outline-dark" type="button" (click)="this.showForm = !this.showForm">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+    <ul class="list-group" *ngIf="!showAlert()">
+      <li class="list-group-item justify-content-between">
+        <div class="row">
+          <div class="col text-center" *ngIf="!isEjecucion">
+
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Nombre</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Categoría
+            </label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Tipo</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Contrato</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Salario Mensual (EUR)</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label class="label-cabecera">Salario Total (EUR)</label>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item justify-content-between" *ngFor="let persona of personas let i = index">
+        <div class="row">
+          <div class="col text-center btn-group-sm" role="group" *ngIf="!isEjecucion">
+            <button type="button" class="btn btn-primary" [disabled]="showForm" ngbTooltip="Editar" placement="top" (click)="onEdit(persona)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger"  ngbTooltip="Eliminar" placement="top" (click)="openModalRemove(persona)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{persona.nombre}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{persona.categoria.valor}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{persona.tipo_personal.valor}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{persona.contrato.valor}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{salario_mensual_formateado[i]}}</label>
+          </div>
+          <div class="col text-center form-group no-margin">
+            <label>{{salario_total_formateado[i]}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <br>
+    <p>
+      <ngb-alert type='info'  *ngIf="showAlert() && !(showAlertCategoria | async) && !isEjecucion">No existe ninguna persona, pulse en el botón + para agregar una nueva.</ngb-alert>
+      <ngb-alert *ngIf="showAlertCategoria | async" type='warning'>No existe ninguna Categoría, pulse <a routerLink="/categorias">aquí </a> para agregar una nueva.</ngb-alert>
+    </p>
+ </div>
+</div>

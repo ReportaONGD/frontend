@@ -1,0 +1,11 @@
+<div class="form-label-group" [formGroup]="item">
+    <select formControlName="partida" id="ddlPartida" [required]="isRequired" [compareWith]="compareFn" class="form-control">
+        <option [ngValue]="null" [selected]="true" disabled>Partida</option>
+        <option *ngFor="let partida of partidas" [ngValue]="partida">{{partida.nombre}}</option>
+    </select>
+    <label for="ddlPartida">Partida</label>
+    <div *ngIf="isRequired && (item.get('partida').invalid && (item.get('partida').dirty || item.get('partida').touched))"
+        class="alert alert-danger alert-form">
+        <span>El campo partida es obligatorio.</span>
+    </div>
+</div>

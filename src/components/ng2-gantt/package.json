@@ -1,0 +1,54 @@
+{
+  "_from": "ng2-gantt",
+  "_id": "ng2-gantt@1.11.1-alpha.9",
+  "_inBundle": false,
+  "_integrity": "sha1-yV3pM7JuWXbvXwQEu9AJjU4PfBA=",
+  "_location": "/ng2-gantt",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "ng2-gantt",
+    "name": "ng2-gantt",
+    "escapedName": "ng2-gantt",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ng2-gantt/-/ng2-gantt-1.11.1-alpha.9.tgz",
+  "_shasum": "c95de933b26e5976ef5f0404bbd0098d4e0f7c10",
+  "_spec": "ng2-gantt",
+  "_where": "C:\\Projects\\AECID-FRONTEND",
+  "bugs": {
+    "url": "https://github.com/dalestone/angular2-gantt/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Angular 2 Gantt",
+  "homepage": "https://github.com/dalestone/angular2-gantt/#readme",
+  "keywords": [
+    "angular",
+    "material",
+    "gantt",
+    "angular2",
+    "gantt html"
+  ],
+  "license": "MIT",
+  "name": "ng2-gantt",
+  "peerDependencies": {
+    "@angular/common": "2.4.5",
+    "@angular/compiler": "2.4.5",
+    "@angular/core": "2.4.5"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dalestone/angular2-gantt.git"
+  },
+  "version": "1.11.1-alpha.9"
+}

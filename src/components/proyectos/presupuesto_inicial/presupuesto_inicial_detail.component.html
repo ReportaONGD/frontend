@@ -1,0 +1,77 @@
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmPresupuesto" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" id="txtConcepto" formControlName="concepto" placeholder="Concepto">
+              <label for="txtConcepto">concepto</label>
+              <div *ngIf="frmPresupuesto.controls.concepto.invalid 
+                    && (frmPresupuesto.controls.concepto.dirty || frmPresupuesto.controls.concepto.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPresupuesto.controls.concepto.hasError('required')">El campo concepto es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" class="form-control" id="txtObservaciones" formControlName="observaciones" placeholder="Observaciones">
+              <label for="txtObservaciones">Observaciones</label>
+              <div *ngIf="frmPresupuesto.controls.observaciones.invalid 
+                      && (frmPresupuesto.controls.observaciones.dirty || frmPresupuesto.controls.observaciones.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPresupuesto.controls.observaciones.hasError('required')">El campo observaciones es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="number" class="form-control" id="txtImporte" formControlName="importe" placeholder="Importe">
+              <label for="txtImporte">Importe</label>
+              <div *ngIf="frmPresupuesto.controls.importe.invalid 
+                        && (frmPresupuesto.controls.importe.dirty || frmPresupuesto.controls.importe.touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmPresupuesto.controls.importe.hasError('required')">El campo importe es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-etapa-combo-component [item]="frmPresupuesto" [ids]="ids"></app-etapa-combo-component>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <app-partida-combo-component [ids]="ids" [isRequired]="true" [item]="frmPresupuesto"></app-partida-combo-component>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <!-- <app-financiador-combo-component [ids]="ids" [item]="frmPresupuesto"></app-financiador-combo-component> -->
+            <app-financiador-combo-component [financiadores]="proyecto.financiador" [item]="frmPresupuesto"></app-financiador-combo-component>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <!-- <app-implementador-combo-component [ids]="ids" [item]="frmPresupuesto"></app-implementador-combo-component> -->
+            <app-implementador-combo-component [implementadores]="proyecto.implementador" [item]="frmPresupuesto"></app-implementador-combo-component>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-actividad-combo-component [ids]="ids" [isRequired]="true" [item]="frmPresupuesto"></app-actividad-combo-component>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-paises-component [item]="frmPresupuesto" [isMultiple]="false" [paises]="paises"></app-paises-component>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group">
+            <app-moneda-component [item]="frmPresupuesto" [isRequired]="true"></app-moneda-component>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmPresupuesto.valid">Guardar
+          </button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

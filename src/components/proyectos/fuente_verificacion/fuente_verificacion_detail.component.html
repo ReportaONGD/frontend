@@ -1,0 +1,32 @@
+<a (focus)="activeModal.focused = true" (blur)="activeModal.focused = false"></a>
+<div class="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmFV" (submit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <input type="text" class="form-control" formControlName="codigo" placeholder="Código">
+            <div *ngIf="frmFV.get('codigo').invalid 
+                        && (frmFV.get('codigo').dirty || frmFV.get('codigo').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmFV.get('codigo').hasError('required')">El campo código es obligatorio.</span>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 form-group">
+            <textarea class="form-control" formControlName="descripcion" placeholder="Descripción"></textarea>
+            <div *ngIf="frmFV.get('descripcion').invalid 
+                          && (frmFV.get('descripcion').dirty || frmFV.get('descripcion').touched)" class="alert alert-danger alert-form">
+              <span *ngIf="frmFV.get('descripcion').hasError('required')">El campo descripción es obligatorio.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" *ngIf="!isEjecucion" type="submit" [disabled]="!frmFV.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

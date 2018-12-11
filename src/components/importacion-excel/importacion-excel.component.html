@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Fichero</span>
+        </div>
+        <div class="custom-file">
+          <input placement="top" ngbTooltip="{{fileName}}" type="file"
+                 class="custom-file-input"
+                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                 id="excel" (change)="fileInputChange($event)" />
+          <label class="custom-file-label" for="excel">{{fileName}}</label>
+        </div>
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-success btn-sm" placement="top" ngbTooltip="Importar a excel" 
+                  (click)="importToExcel()">
+            <i class="fa fa-file-excel-o"></i>
+          </button>
+          <span class="input-group-text"  *ngIf="spinnerVisible" [hidden]="!isLoading"><i class="fa fa-cog fa-spin" style="font-size: 1.4em;"></i></span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <!-- <div class="col-md-1 col-xs-1" style="padding-top: .4rem;">
+    
+  </div> -->
+  <div class="my-container" [hidden]="!isLoading">
+    <ngx-loading show=true; [config]="config"></ngx-loading>
+  </div>
+</div>
+

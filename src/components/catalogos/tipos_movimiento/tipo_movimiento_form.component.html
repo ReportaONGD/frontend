@@ -1,0 +1,98 @@
+<div [class]="modal-body">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="form-signin-heading">{{title}}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="frmTipoMovimiento" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group">
+            <div class="form-label-group">
+              <input type="text" id="txtValor" class="form-control" formControlName="valor" placeholder="Valor" appAutofocus>
+              <label for="txtValor">Valor</label>
+              <div *ngIf="frmTipoMovimiento.get('valor').invalid
+                  && (frmTipoMovimiento.get('valor').dirty || frmTipoMovimiento.get('valor').touched)" class="alert alert-danger alert-form">
+                <span *ngIf="frmTipoMovimiento.get('valor').hasError('required')">El campo valor es obligatorio.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12 form-group text-left">
+            <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="es_entrada">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Entrada en cuenta
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Si
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group text-left">
+            <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="origen">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Origen
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Si
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group text-left">
+            <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="destino">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Destino
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Si
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-xs-12 form-group text-left">
+            <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="cheque">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Cheque
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Si
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12 form-group text-left">
+            <div class="btn-group btn-group-toggle pt-2" ngbRadioGroup formControlName="pago">
+              <label ngbButtonLabel class="btn btn-outline-dark">
+                Pago
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="true"> Si
+              </label>
+              <label ngbButtonLabel class="btn-primary">
+                <input ngbButton type="radio" [value]="false"> No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 text-right" style="padding: 0px;">
+          <button class="btn btn-primary btn-form-inline" type="submit" [disabled]="!frmTipoMovimiento.valid">Guardar</button>
+          <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
