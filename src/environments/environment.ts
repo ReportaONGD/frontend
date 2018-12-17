@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   // apiEndpoint: 'http://aecid-backend.ezentis.com/api/v1',
-   apiEndpoint: 'http://localhost:3000/api/v1',
+  apiEndpoint: 'API_ENDPOINT',
+  //  apiEndpoint: 'http://localhost:3000/api/v1',
   excelEndPoint: '../assets/excel_template/plantilla_gong.xlsx'
 };

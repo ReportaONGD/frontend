@@ -55,7 +55,7 @@ export class ProyectosGongComponent implements OnInit {
       this.proyectos = resp;
       console.log('OK!!!!!');
       this.isLoading = false;
-      this.common.toastr.success('Archivo exportado!', 'Success!', { timeOut: 3000 });
+      this.common.toastr.success('Proyecto importado!', 'Success!', { timeOut: 3000 });
       this.router.navigate(['/proyectos']);
     }, (err) => {
       this.isLoading = false;

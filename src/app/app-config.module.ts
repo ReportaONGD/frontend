@@ -5,7 +5,7 @@ export let APP_CONFIG = new InjectionToken<string>('app.config');
 
 export class AppConfig  {
   apiEndpoint: string;
-};
+}
 
 export const APP_DI_CONFIG: AppConfig = {
   apiEndpoint: environment.apiEndpoint

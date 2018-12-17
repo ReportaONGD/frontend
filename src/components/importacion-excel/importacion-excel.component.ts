@@ -53,7 +53,7 @@ export class ImportacionExcelComponent {
       this.service.post_document(this.file).subscribe((resp) => {
         console.log('OK!!!!!');
         this.isLoading = false;
-        this.common.toastr.success('Archivo importado!', 'Success!', { timeOut: 3000 });
+        this.common.toastr.success('Proyecto importado!', 'Success!', { timeOut: 3000 });
         this.router.navigate(['/proyectos']);
       }, (err) => {
         this.isLoading = false;
